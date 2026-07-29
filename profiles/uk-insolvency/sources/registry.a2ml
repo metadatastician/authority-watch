@@ -1,0 +1,109 @@
+schema = "authority-watch-source-registry/v1"
+profile_id = "uk-insolvency"
+status = "DECLARED_NOT_ACTIVELY_MONITORED"
+terms_checked_at = "2026-07-29"
+
+[[sources]]
+source_id = "legislation-gov-uk"
+publisher = "The National Archives"
+source_class = "formal-primary-authority"
+authority_grade = "A"
+jurisdiction = "United Kingdom"
+coverage = "Legislation, publication log, point-in-time text, effects and amendments"
+official_uri = "https://www.legislation.gov.uk/"
+machine_uri = "https://www.legislation.gov.uk/developer"
+licence = "Open Government Licence subject to source-specific notices"
+retrieval_method = "official-api-and-atom"
+expected_cadence = "daily"
+review_owner = "uk-insolvency-curator"
+enabled = false
+
+[[sources]]
+source_id = "govuk-content-api"
+publisher = "Government Digital Service"
+source_class = "official-guidance"
+authority_grade = "C"
+jurisdiction = "United Kingdom"
+coverage = "Relevant departmental guidance, metadata and attachments"
+official_uri = "https://www.gov.uk/"
+machine_uri = "https://content-api.publishing.service.gov.uk/"
+licence = "Open Government Licence subject to source-specific notices"
+retrieval_method = "official-content-api-and-feeds"
+expected_cadence = "daily"
+review_owner = "uk-insolvency-curator"
+enabled = false
+
+[[sources]]
+source_id = "uk-parliament"
+publisher = "UK Parliament"
+source_class = "prospective-material"
+authority_grade = "D"
+jurisdiction = "United Kingdom"
+coverage = "Bills, amendments, explanatory notes and delegated legislation"
+official_uri = "https://www.parliament.uk/"
+machine_uri = "https://developer.parliament.uk/"
+licence = "Parliamentary Copyright and API terms require adapter review"
+retrieval_method = "official-api-and-rss"
+expected_cadence = "daily-when-sitting"
+review_owner = "uk-insolvency-curator"
+enabled = false
+
+[[sources]]
+source_id = "statements-of-insolvency-practice"
+publisher = "Joint Insolvency Committee and recognised professional bodies"
+source_class = "formal-professional-requirement"
+authority_grade = "B"
+jurisdiction = "Profile-specific"
+coverage = "Issued and proposed Statements of Insolvency Practice"
+official_uri = "MANUAL_REGISTRY_REQUIRED"
+machine_uri = "NONE"
+licence = "Per-document terms review required"
+retrieval_method = "monitored-document"
+expected_cadence = "weekly"
+review_owner = "uk-insolvency-professional-reviewer"
+enabled = false
+
+[[sources]]
+source_id = "jieb-assessment-material"
+publisher = "Joint Insolvency Examination Board"
+source_class = "assessment-requirement"
+authority_grade = "C"
+jurisdiction = "United Kingdom"
+coverage = "Syllabus, authority cut-off, regulations and candidate guidance"
+official_uri = "MANUAL_REGISTRY_REQUIRED"
+machine_uri = "NONE"
+licence = "Per-document terms review required"
+retrieval_method = "monitored-document"
+expected_cadence = "monthly"
+review_owner = "uk-insolvency-assessment-reviewer"
+enabled = false
+
+[[sources]]
+source_id = "find-case-law"
+publisher = "The National Archives"
+source_class = "formal-primary-authority"
+authority_grade = "A"
+jurisdiction = "England and Wales"
+coverage = "Manually identified judgments pending computational-analysis terms review"
+official_uri = "https://caselaw.nationalarchives.gov.uk/"
+machine_uri = "DISABLED_PENDING_TERMS_AND_LICENCE_REVIEW"
+licence = "REVIEW_REQUIRED"
+retrieval_method = "manual-ingest"
+expected_cadence = "manual"
+review_owner = "uk-insolvency-legal-reviewer"
+enabled = false
+
+[[sources]]
+source_id = "the-gazette"
+publisher = "The Gazette"
+source_class = "official-notice-data"
+authority_grade = "C"
+jurisdiction = "United Kingdom"
+coverage = "Insolvency notice concepts and empirical scenario research only"
+official_uri = "https://www.thegazette.co.uk/"
+machine_uri = "https://www.thegazette.co.uk/data"
+licence = "Terms and linked-data reuse review required"
+retrieval_method = "linked-data"
+expected_cadence = "daily"
+review_owner = "uk-insolvency-curator"
+enabled = false

@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+
+enum TransitionDecision {
+  Allowed,
+  RejectedSkip,
+  RequiresSpecialist,
+  RequiresSecondReviewer
+}
+
+struct TransitionRequest {
+  fromState: String,
+  toState: String,
+  reviewerCount: Int,
+  production: Bool
+}
+
+fn productionApprovalGate(request: ref TransitionRequest) -> TransitionDecision {
+  if request.production {
+    if request.reviewerCount >= 2 {
+      Allowed
+    } else {
+      RequiresSecondReviewer
+    }
+  } else {
+    Allowed
+  }
+}

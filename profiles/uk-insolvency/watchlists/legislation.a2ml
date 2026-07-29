@@ -1,0 +1,23 @@
+schema = "authority-watch-watchlist/v1"
+profile_id = "uk-insolvency"
+status = "DECLARED_NOT_ACTIVELY_MONITORED"
+
+[[authorities]]
+id = "ukpga-1986-45"
+title = "Insolvency Act 1986"
+uri = "https://www.legislation.gov.uk/ukpga/1986/45"
+
+[[authorities]]
+id = "ukpga-1986-46"
+title = "Company Directors Disqualification Act 1986"
+uri = "https://www.legislation.gov.uk/ukpga/1986/46"
+
+[[authorities]]
+id = "uksi-2016-1024"
+title = "Insolvency (England and Wales) Rules 2016"
+uri = "https://www.legislation.gov.uk/uksi/2016/1024"
+
+[[authorities]]
+id = "ukpga-2020-12"
+title = "Corporate Insolvency and Governance Act 2020"
+uri = "https://www.legislation.gov.uk/ukpga/2020/12"

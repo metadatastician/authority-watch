@@ -1,0 +1,11 @@
+schema = "authority-watch-profile/v1"
+profile_id = "uk-insolvency"
+title = "UK insolvency authority monitoring"
+status = "PROVISIONAL_UNREVIEWED"
+core_ontology = "generic"
+jurisdiction_scope = ["UK", "England and Wales"]
+first_consumer = "metadatastician/sim-insolvency"
+production_updates_enabled = false
+single_curator_mode = true
+single_curator_bundle_mark = "PROVISIONAL_SINGLE_REVIEW"
+professional_review_required = true

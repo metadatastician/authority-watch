@@ -1,0 +1,7 @@
+.zig-cache/
+zig-out/
+idris2/build/
+state/
+observations/
+bundles/private/
+*.tmp

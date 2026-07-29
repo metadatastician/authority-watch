@@ -1,0 +1,6 @@
+package authority-watch
+
+sourcedir = "."
+
+modules = AuthorityWatch.Core,
+          AuthorityWatch.Review

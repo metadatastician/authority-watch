@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= NNTPS integration
+
+NNTPS is an optional durable review and release mirror, not the canonical
+database or authority source. One substantive change maps to one root article;
+replies preserve `Message-ID`, `References`, classification, interpretation,
+objections, approval, supersession and revocation.
+
+The bounded first integration will generate articles and headers for an
+existing NNTPS server. It will not transform No-Nonsense NNTPS into a server and
+will not accept a review-thread message as an approval without a separately
+authenticated ledger event.

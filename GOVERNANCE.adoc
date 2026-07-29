@@ -1,0 +1,24 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Governance
+
+== Safety authority
+
+The source publisher controls what was published. Authority Watch records that
+publication. A qualified human reviewer determines an interpretation. A
+separate approval event authorises a rule-pack change. Signing attests to the
+approved bundle; it does not create legal truth.
+
+== Review
+
+Production legal-rule changes require two identified reviewers. During private
+solo experimentation, one curator may produce only a bundle marked
+`PROVISIONAL_SINGLE_REVIEW`. Such a bundle cannot support an accredited or
+professionally validated assessment claim.
+
+Reviews and corrections are append-only events. A correction supersedes but
+does not erase its predecessor.
+
+== Publication
+
+Unsigned, revoked, stale, rollback-unsafe, or unapproved bundles must not
+activate. Operators remain responsible for professional and legal review.

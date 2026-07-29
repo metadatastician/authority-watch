@@ -1,0 +1,150 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+// Generic Authority Watch domain contract. No insolvency-specific core types.
+
+type StableId = String;
+type Version = String;
+type Timestamp = String;
+type Digest = String;
+type Uri = String;
+
+enum AuthorityGrade {
+  FormalPrimary,
+  FormalProfessional,
+  OfficialGuidance,
+  Prospective,
+  SecondaryCommentary
+}
+
+enum RetrievalMethod {
+  OfficialApi,
+  StructuredFeed,
+  MonitoredDocument,
+  MonitoredPage,
+  ManualIngest
+}
+
+enum ReviewState {
+  Observed,
+  Retrieved,
+  SourceVerified,
+  Parsed,
+  Diffed,
+  MachineClassified,
+  TriageRequired,
+  ImpactCandidatePrepared,
+  FirstReviewCompleted,
+  SecondReviewCompleted,
+  Approved,
+  Tested,
+  Signed,
+  Published,
+  Consumed,
+  NoSubstantiveChange,
+  Rejected,
+  NeedsSpecialistAdvice,
+  AwaitingCommencement,
+  AwaitingAppeal,
+  AwaitingExternalClarification,
+  SourceDisputed,
+  Withdrawn,
+  RevokedAfterPublication
+}
+
+enum Freshness {
+  CurrentVerified,
+  CurrentProvisional,
+  ReviewPending,
+  ChangeDetected,
+  Stale,
+  SourceUnavailable,
+  Superseded,
+  Revoked,
+  Unsupported
+}
+
+struct AuthoritySource {
+  id: StableId,
+  publisher: String,
+  sourceClass: String,
+  authorityGrade: AuthorityGrade,
+  jurisdiction: String,
+  coverage: String,
+  officialUri: Uri,
+  machineUri: Uri,
+  licence: String,
+  termsCheckedAt: Timestamp,
+  retrievalMethod: RetrievalMethod,
+  expectedCadence: String,
+  reviewOwner: StableId,
+  enabled: Bool
+}
+
+struct TemporalFacts {
+  publicationDate: String,
+  effectiveFrom: String,
+  effectiveUntil: String,
+  commencementDate: String,
+  observationDate: String,
+  reviewDate: String,
+  approvalDate: String,
+  releaseDate: String
+}
+
+struct SourceObservation {
+  id: StableId,
+  sourceId: StableId,
+  canonicalUri: Uri,
+  retrievedUri: Uri,
+  retrievedAt: Timestamp,
+  httpStatus: Int,
+  contentType: String,
+  rawDigest: Digest,
+  rawLocation: String,
+  parserVersion: Version,
+  normaliserVersion: Version,
+  licenceId: String,
+  previousObservation: StableId
+}
+
+struct AuthorityChangeCandidate {
+  id: StableId,
+  sourceObservation: StableId,
+  authorityGrade: AuthorityGrade,
+  changeType: String,
+  jurisdiction: String,
+  publicationStatus: String,
+  legalStatus: String,
+  machineClassification: String,
+  classificationConfidence: Int,
+  humanClassification: String,
+  interpretationRequired: Bool,
+  reviewState: ReviewState
+}
+
+struct ReviewRecord {
+  id: StableId,
+  changeId: StableId,
+  reviewerId: StableId,
+  role: String,
+  scope: String,
+  evidenceDigest: Digest,
+  interpretation: String,
+  effectiveDateReasoning: String,
+  uncertainties: String,
+  decision: String,
+  reviewedAt: Timestamp,
+  signature: String
+}
+
+struct UpdateBundle {
+  id: StableId,
+  profileId: StableId,
+  manifestDigest: Digest,
+  reviewState: ReviewState,
+  freshness: Freshness,
+  signature: String,
+  revoked: Bool
+}
+
+// An observation is consumed once by the append-only persistence boundary.
+fn persistObservation(observation: own SourceObservation) -> () = ();

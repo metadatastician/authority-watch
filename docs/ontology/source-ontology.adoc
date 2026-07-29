@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Source ontology
+
+Grades describe the role a source may play; they do not remove the need for
+interpretation.
+
+* A: enacted or made primary/formal authority and properly interpreted binding
+  judgments.
+* B: formal professional or regulatory requirements.
+* C: official guidance and operational requirements.
+* D: prospective Bills, drafts, consultations and pending legal events.
+* E: secondary commentary useful for issue discovery only.
+
+Every source identity includes publisher, class, grade, jurisdiction, coverage,
+official and machine URIs, licence, terms review time, retrieval method,
+cadence, review owner and enabled state.

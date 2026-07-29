@@ -1,0 +1,32 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Roadmap
+
+== Milestone 1: manual precision core
+
+Ontology, immutable observations, manual ingestion, deterministic diffs,
+review transitions, impact mapping, provisional bundles, and a local operator
+projection.
+
+== Milestone 2: official APIs
+
+Legislation.gov.uk Publication Log and structured documents, GOV.UK Content
+API and feeds, and source-health reporting.
+
+== Milestone 3: professional material
+
+SIP, JIEB, professional-code, same-URL document replacement, and
+email-assisted ingestion.
+
+== Milestone 4: consumer integration
+
+Signed manifests, staging, compatibility and rollback checks, freshness, and
+`sim-insolvency` certificate withholding.
+
+== Milestone 5: NNTPS review mirror
+
+Auditable review threads and signed release/revocation notices.
+
+== Milestone 6: hosted service
+
+Read API, Atom, authenticated review actions, redundant scheduling, backup,
+recovery, key management, and public status.

@@ -1,0 +1,11 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Authority change ontology
+
+An `AuthorityChangeCandidate` joins one or more observations with byte,
+structural and candidate-semantic diffs. It records authority grade,
+jurisdiction, provisions, publication and legal status, distinct dates,
+machine classification and confidence, human classification, possible
+downstream identifiers, review state, discussion and signatures.
+
+The word `candidate` is load-bearing: no machine-produced classification is a
+final legal interpretation.

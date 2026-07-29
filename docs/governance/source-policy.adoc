@@ -1,0 +1,14 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Source policy
+
+Every source declares its publisher, class, authority grade, jurisdiction,
+coverage, official and machine URIs, licence, terms review date, retrieval
+method, expected cadence, review owner and enabled state.
+
+Adapters prefer official APIs and feeds, identify themselves, make conditional
+requests, obey documented limits, cache, back off, preserve attribution and
+never bypass access controls. Monitoring a declared URL does not grant a
+licence to redistribute its content.
+
+Grade E commentary may surface an issue for human investigation but cannot
+independently support an authoritative rule.

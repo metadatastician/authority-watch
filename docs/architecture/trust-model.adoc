@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Trust model
+
+The intended production model follows TUF principles:
+
+* an offline root delegates narrow online roles;
+* review and publication roles are distinct;
+* snapshot metadata binds the complete release view;
+* timestamp metadata provides freshness and freeze detection;
+* monotonically increasing versions prevent silent rollback;
+* every role supports rotation and revocation.
+
+The initial development core emits no production signature and contains no
+embedded key. A provisional bundle may be constructed only after an explicit
+approval event and is visibly unsuitable for accredited use.
+
+Activation requires all of:
+
+* an allowed review state;
+* a signature from a trusted, non-revoked role;
+* compatible schema and consumer versions;
+* explicit effective-date facts;
+* successful required tests;
+* rollback monotonicity or separately authorised rollback;
+* non-revoked bundle state.

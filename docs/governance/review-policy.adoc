@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Review policy
+
+Canonical progress is append-only:
+
+----
+Observed -> Retrieved -> SourceVerified -> Parsed -> Diffed
+-> MachineClassified -> TriageRequired -> ImpactCandidatePrepared
+-> FirstReviewCompleted -> SecondReviewCompleted -> Approved
+-> Tested -> Signed -> Published -> Consumed
+----
+
+The transition validator rejects skipped states. Alternative terminal or
+waiting states preserve rejection, non-substantive change, specialist advice,
+commencement, appeal, clarification, dispute, withdrawal and revocation.
+
+Corrections are new signed events that reference the superseded review.

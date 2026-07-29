@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Acquisition pipeline
+
+Adapters implement retrieval, conditional retrieval, raw preservation,
+canonical identity, redirect handling, no-change handling, deletion,
+malformed-response and rate-limit handling, and fixture replay.
+
+An adapter may emit only an observation plus diagnostics. It cannot emit an
+approved interpretation, patch, signature or activation command.
+
+No network adapter is enabled in the foundation release. Manual ingestion is
+implemented first so the immutable evidence and review boundaries can be
+tested before scheduling or crawling exists.

@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Product boundary
+
+Authority Watch detects and preserves evidence about publications. It assists
+humans in classification and downstream impact review. It does not provide
+legal advice, determine legal effect autonomously, accredit assessments, or
+install production updates without review.
+
+A changed byte is evidence of a changed representation, not necessarily a
+legal change. A machine classification is a suggestion, not an interpretation.
+A signature authenticates bytes and an approval history; it does not certify
+that an interpretation is professionally correct.

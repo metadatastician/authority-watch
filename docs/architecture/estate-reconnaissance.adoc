@@ -1,0 +1,85 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Estate reconnaissance
+:toc: left
+
+== Method
+
+Reconnaissance used clean shallow clones of the named repositories on
+2026-07-29. Revisions below identify the exact inspected state. Dirty or
+diverged estate checkouts were not modified.
+
+[cols="2,2,3",options="header"]
+|===
+|Repository |Inspected revision |Finding and decision
+
+|`hyperpolymath/affinescript`
+|`ed4e22301625970677564ce8bb6282043e104544`
+|The canonical syntax supports enums, structs, typed functions, ownership and
+effect rows. The project describes itself as early and experimental, with
+partial implementation and metatheory. Authority Watch uses only demonstrated
+syntax and keeps executable host behaviour in Zig.
+
+|`hyperpolymath/typed-wasm`
+|`2214cb740abdfd6fc3eae2ef1a0140775792c065`
+|Provides a proof-oriented convergence ABI and typed WebAssembly direction.
+Consumer verification integration is deferred until Authority Watch's core ABI
+and upstream carrier are stable.
+
+|`hyperpolymath/snifs`
+|`8f39478b9505facf05fa5e0ea032cd34b79d555e`
+|Provides safer BEAM-native functions through Wasm and useful ABI examples. It
+does not currently improve the canonical offline observation ledger, so no
+dependency is selected.
+
+|`hyperpolymath/no-nonsense-nntps`
+|`8680469147d17196beafec84cbbcfe10b8ca17d8`
+|A secure reader with Zig FFI. Authority Watch will define a bounded profile or
+bridge and custom headers; it will not repurpose the reader as a server.
+
+|`metadatastician/gossamer`
+|`1c69cbb2238ed11ed405352141852541c490bce2`
+|Contains pure-Zig shell machinery, Idris2 ABI definitions and current
+AffineScript bindings for filesystem, shell, capability and event operations.
+It is suitable for a later operator projection over the manual core.
+
+|`metadatastician/sim-insolvency`
+|`b82a9a2ccfa72723138aea0400fb8df7a3380211`
+|Establishes the estate direction: AffineScript contracts, Zig executable
+fallback and boundary layer, Idris2 ABI proofs, Guix-first commands, explicit
+capability gates, and append-only evidence. Authority Watch follows this
+direction and will supply bundles rather than live adapters to the simulator.
+
+|`hyperpolymath/proven-tests-and-benches`
+|`d9a21801c41b3edfb8820fc5229fcaf33dd3bb47`
+|Provides an Idris2 testing taxonomy and type-safe suites. Initial tests mirror
+the taxonomy locally; direct dependency waits for core ABI stability.
+
+|`metadatastician/burble`
+|`b67b2eb9dbe1b5bc874432962d1d8593699a0fe5`
+|Provides AffineScript client/admin contracts and real-time collaboration.
+Burble is optional for urgent alerts and live review only; ephemeral discussion
+cannot become an approval event.
+|===
+
+== Unresolved estate capabilities
+
+No canonical repository for `unified-hexadeca-api` was located. The inspected
+`sim-insolvency` revision independently records the same blocker. Authority
+Watch therefore documents a read-oriented API contract but does not fabricate
+an implementation or dependency.
+
+The estate template chain is documented as
+`standards -> rsr-template-repo -> scaffoldia`. The directly inspected
+`sim-insolvency` repository is the closest current architecture template for
+this project.
+
+== Integration choices
+
+* The offline core precedes all automated acquisition.
+* Source adapters return immutable observations; they never return rule edits.
+* Gossamer receives a projection and authenticated commands, not direct access
+  to signing keys.
+* `sim-insolvency` receives verified bundles and freshness metadata, never live
+  source-adapter output.
+* NNTPS and Burble mirror review evidence but cannot advance canonical state.
+* Missing capabilities fail closed and remain visible in status output.

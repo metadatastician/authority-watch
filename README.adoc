@@ -1,0 +1,67 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+// SPDX-FileCopyrightText: 2026 Jonathan D.A. Jewell (hyperpolymath)
+= Authority Watch
+:toc: left
+:reproducible:
+
+[.lead]
+A source-attributed, human-governed service for observing authoritative
+publications, detecting meaningful changes, assessing possible downstream
+impact, and publishing signed update bundles for regulated software.
+
+[IMPORTANT]
+====
+Authority Watch is not a lawyer, legal advice, an autonomous legal interpreter,
+or an automatic production updater. Observation, textual change, possible
+effect, human interpretation, approved rule change, and signed publication are
+different states. The software must never collapse them.
+====
+
+== Current status
+
+The repository contains the foundation and executable manual precision core.
+It models immutable observations, separate temporal facts, review-state
+transitions, candidate impacts, freshness, and activation gates. The first
+profile is `uk-insolvency`; its first consumer contract is
+`metadatastician/sim-insolvency`.
+
+No legal source represented here has been professionally interpreted or
+approved. Automated source monitoring and production signing remain
+capability-gated until their source terms, adapters, and trust operations have
+been reviewed.
+
+== Architecture
+
+* AffineScript declares the generic authority, observation, change, impact,
+  review, bundle, and consumer contracts.
+* Pure Zig implements the executable offline core and host boundaries.
+* Idris2 defines proof-bearing identities, temporal distinctions, legal review
+  transitions, and bundle activation constraints.
+* typed-wasm and Gossamer are intended deployment and operator-shell
+  integrations; current capability findings are recorded in
+  `docs/architecture/estate-reconnaissance.adoc`.
+
+== First commands
+
+[source,console]
+----
+just doctor
+just build
+just test
+just run
+just ingest path/to/official-document
+----
+
+Manual ingestion produces an observation digest only. It cannot create an
+approved interpretation or publish a rule pack.
+
+== Data boundary
+
+Production source archives, operator state, reviews, credentials, and signing
+keys are deliberately excluded from Git. Only small, licensed, attributed test
+fixtures may be committed.
+
+== Licence
+
+Original code and documentation are licensed under
+`PMPL-2.0-or-later`. Per-file SPDX declarations are authoritative.

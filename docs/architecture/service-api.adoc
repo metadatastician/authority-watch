@@ -1,0 +1,14 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Service API contract
+
+The future read API exposes versioned status, sources, observations, changes,
+impacts, rule packs, bundles, profile freshness, and Atom change/release feeds.
+Responses use deterministic pagination, ETags, content digests and explicit
+schema versions.
+
+Administrative ingestion, parsing, triage, review, approval, signing,
+publication and revocation are authenticated commands separated from read
+access.
+
+Implementation through `unified-hexadeca-api` is blocked until its canonical
+repository and real interface are located.

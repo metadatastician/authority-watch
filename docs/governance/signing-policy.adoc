@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Signing policy
+
+Signing binds the canonical manifest, observation digests, approved
+interpretations, rule patch, migration data, impact report, required tests,
+review records, rollback target, revocation state and licence metadata.
+
+No production private key is stored in Git, application configuration, a
+fixture, or an operator bundle. Online roles are narrowly delegated and
+rotatable. Root operations are offline.

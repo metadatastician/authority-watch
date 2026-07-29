@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Temporal semantics
+
+Publication, making, laying, enactment, royal assent, commencement,
+effective-from, effective-until, revision publication, guidance issue and
+withdrawal, consultation open and close, judgment, appeal status, observation,
+review, approval and release are separate facts.
+
+Missing effective dates remain missing. They are never inferred from
+publication dates.

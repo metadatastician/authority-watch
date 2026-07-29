@@ -1,0 +1,11 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Impact graph
+
+The graph links source, authority provision, interpreted rule, obligation or
+permission, procedure, scenario action, assessment criterion, golden run and
+certificate claim.
+
+An unmapped authority change is a coverage gap, not evidence of no impact.
+Traversal may yield documentation-only, rule/scenario/rubric review, invalid
+golden runs, certificate wording review, assessment blocking, historical
+validity, or urgent withdrawal.

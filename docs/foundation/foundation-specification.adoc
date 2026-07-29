@@ -1,0 +1,21 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Foundation specification
+
+Authority Watch preserves a chain from exact source bytes to a separately
+approved update:
+
+----
+publication -> observation -> diff -> candidate -> interpretation
+            -> approval -> tested patch -> signed bundle -> staged consumer
+----
+
+No arrow is implicit. Each transition records an event, actor, evidence,
+timestamp and schema version.
+
+The generic core is independent of UK insolvency. Profiles supply source
+registries, jurisdiction vocabularies, review policies, watchlists and consumer
+mappings.
+
+Raw observations are immutable and content-addressed. Extracted and canonical
+representations identify their parser and normaliser versions. Reprocessing
+creates a new derived artefact and never overwrites historical bytes.

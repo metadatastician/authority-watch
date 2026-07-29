@@ -1,0 +1,14 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Human governance
+
+Production legal-rule changes require two reviewers with recorded identities,
+roles, scope, inspected evidence, interpretation, effective-date reasoning,
+uncertainties, decision, time and signature.
+
+The solo development profile permits one provisional curator. Its output is
+always marked `PROVISIONAL_SINGLE_REVIEW`, cannot become
+`CURRENT_VERIFIED`, and cannot support formal certification.
+
+Specialist uncertainty is a first-class outcome. `NeedsSpecialistAdvice`,
+`AwaitingCommencement`, `AwaitingAppeal`, `AwaitingExternalClarification` and
+`SourceDisputed` preserve uncertainty rather than forcing a conclusion.

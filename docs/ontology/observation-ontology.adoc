@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Observation ontology
+
+A `SourceObservation` is an immutable record of a retrieval. It identifies
+source and canonical URIs, retrieval time and transport result, source-reported
+times, HTTP validators and metadata, exact raw digest and location, parser and
+normaliser versions, licence, request metadata and predecessor.
+
+Raw bytes, extracted form, canonical form and parsing diagnostics are separate
+artefacts. Parser upgrades never rewrite earlier artefacts.

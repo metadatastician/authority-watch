@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Correction and revocation policy
+
+Observations and reviews are never destructively rewritten. A correction cites
+the affected identifiers, explains the error, supplies replacement evidence
+and records its reviewer and signature.
+
+Revocation prevents activation and creates a signed revocation record. It does
+not erase historical evidence. Consumers retain the prior pack only for
+explicit historical replay with visible warnings.

@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= UK insolvency profile
+
+This profile declares an initial monitoring scope. It contains no approved
+legal interpretation and all adapters are disabled until their terms,
+licensing, retrieval behaviour and fixtures are reviewed.
+
+Initial formal legislation includes the Insolvency Act 1986, Company Directors
+Disqualification Act 1986, Insolvency (England and Wales) Rules 2016, and
+Corporate Insolvency and Governance Act 2020.
+
+Professional and assessment sources include issued and proposed Statements of
+Insolvency Practice, professional codes and notices, and JIEB syllabus and
+candidate material. Syllabus changes are distinct from changes in law.
+
+Find Case Law remains disabled. Manual judgment metadata may be ingested only
+with an official origin while API terms, computational-analysis status,
+licensing, attribution and retention obligations remain under review.

@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Contributing
+
+Start with `just doctor`, then run `just check`.
+
+Contributions that add a source adapter must document the official source,
+licence or terms review date, retrieval method, identifying user agent,
+conditional-request behaviour, rate limits, expected cadence, failure modes,
+and fixture provenance.
+
+Never commit a production observation. Fixtures must be small, licensed,
+attributed, and clearly non-authoritative.

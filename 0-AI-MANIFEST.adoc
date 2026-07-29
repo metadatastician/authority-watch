@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= AI Use Manifest
+
+Machine assistance may identify changed clauses, propose classifications,
+summarise diffs, suggest impact links, and propose tests.
+
+Machine assistance may not determine legal effect conclusively, approve a
+change, choose an unsupported effective date, mark a rule pack current, sign a
+release, or transform observed material directly into an authoritative rule.
+
+Every retained machine suggestion must record the model or tool identity,
+prompt or operation, input observation identifiers, output digest, timestamp,
+and human disposition. The system must remain operable without external AI.

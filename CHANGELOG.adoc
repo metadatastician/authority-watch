@@ -1,0 +1,9 @@
+// SPDX-License-Identifier: PMPL-2.0-or-later
+= Changelog
+
+== Unreleased
+
+* Establish the generic authority/change ontology and safety boundary.
+* Add the offline Zig manual precision core and invariants.
+* Add the initial `uk-insolvency` source registry.
+* Record estate reconnaissance and capability gates.
