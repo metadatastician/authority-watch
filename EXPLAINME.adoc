@@ -354,17 +354,19 @@ Zig enforces at runtime that:
 **IMPORTANT:** The FFI layer is PURE ZIG. There is NO C FFI intermediary. The
 Zig code in `zig/src/` IS the FFI layer.
 
-=== Layer 3: Estate Integration (zig-unified-hexadeca-adapter)
+=== Layer 3: Estate Integration (zig-unified-hexadeca-api)
 
-The estate ABI adapter is `zig-unified-hexadeca-adapter` (in hyperpolymath estate).
+The estate API is `zig-unified-hexadeca-api` (previously called
+`zig-unified-hexadeca-adapter`). It may be located in the `boj-server` repo or
+`developer-ecosystem` in the hyperpolymath estate.
 
-**CRITICAL DISTINCTION:**
+**IMPORTANT:**
 
-* `zig-unified-hexadeca-adapter` = CORRECT, EXISTS in hyperpolymath estate
-* `unified-hexadeca-api` = BLOCKED, DOES NOT EXIST, NO CANONICAL REPOSITORY
+* `zig-unified-hexadeca-api` = **CORRECT**, the estate API
+* `unified-hexadeca-api` (without `zig-` prefix) = **BLOCKED**, no canonical repository
 
-The `zig-unified-hexadeca-adapter` is NOT in rsr-template-repo. It is in the
-hyperpolymath standards repo or other hyperpolymath estate repos.
+`zig-unified-hexadeca-api` is NOT in rsr-template-repo. It may be in
+`boj-server` or `developer-ecosystem` in the hyperpolymath estate.
 
 See `docs/architecture/estate-reconnaissance.adoc` for the full estate
 reconnaissance findings.

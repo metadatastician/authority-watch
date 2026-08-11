@@ -83,8 +83,9 @@ transitions are explicit. The ABI is PURE IDRIS2.
 
 *Gap:* No runtime integration with Zig. The Idris2 code currently exists
 as a parallel type definition (PURE IDRIS2 ABI), not as a compiled dependency.
-The FFI layer is PURE ZIG. The estate ABI adapter is `zig-unified-hexadeca-adapter`
-(in hyperpolymath estate, NOT in rsr-template-repo).
+The FFI layer is PURE ZIG. The estate API is `zig-unified-hexadeca-api`
+(previously `zig-unified-hexadeca-adapter`), which may be in `boj-server` or
+`developer-ecosystem` in the hyperpolymath estate (NOT in rsr-template-repo).
 
 === AffineScript Contracts (`affinescript/`)
 

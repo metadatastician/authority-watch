@@ -17,12 +17,12 @@ source for dependency information.
 
 *ABI IS PURE IDRIS2:* The ABI layer uses pure Idris2 only, with type-level formal definitions.
 
-*ESTATE ADAPTER:* The correct estate ABI adapter is `zig-unified-hexadeca-adapter`
-  (in hyperpolymath estate). This is NOT the same as `unified-hexadeca-api`.
+*ESTATE API:* The correct estate API for integration is `zig-unified-hexadeca-api`.
+  This is the same as what was previously referred to as `zig-unified-hexadeca-adapter`.
+  It may be located in the `boj-server` repo or `developer-ecosystem` in the hyperpolymath estate.
 
-*NOT IN rsr-template-repo:* Neither `zig-unified-hexadeca-adapter` nor
-  `unified-hexadeca-api` are in rsr-template-repo. They are in the hyperpolymath
-  standards repo or other hyperpolymath estate repos.
+*NOT IN rsr-template-repo:* `zig-unified-hexadeca-api` is NOT in rsr-template-repo.
+  It is in the hyperpolymath estate (possibly `boj-server` or `developer-ecosystem`).
 ====
 
 == Dependency Summary
@@ -65,9 +65,9 @@ capabilities. They are NOT in rsr-template-repo.
 |===
 | Dependency | Version | Location | Status | Boundary
 
-| zig-unified-hexadeca-adapter | N/A | hyperpolymath estate (NOT rsr-template-repo) | Inspected | **THIS IS THE CORRECT ESTATE ABI ADAPTER.** Pure Zig + Idris2 implementation. Integration capability-gated pending core ABI stabilization.
+| zig-unified-hexadeca-api | N/A | hyperpolymath estate (possibly `boj-server` or `developer-ecosystem`, NOT rsr-template-repo) | Inspected | **THIS IS THE CORRECT ESTATE API.** Pure Zig + Idris2 implementation. Integration capability-gated pending core ABI stabilization.
 
-| unified-hexadeca-api | N/A | NOT FOUND | BLOCKED | **DO NOT USE.** No canonical repository was located. This is NOT the same as `zig-unified-hexadeca-adapter`. Do not invent or fabricate.
+| unified-hexadeca-api | N/A | NOT FOUND | BLOCKED | **DO NOT USE.** No canonical repository was located. This is a different name from `zig-unified-hexadeca-api`. Do not invent or fabricate.
 |===
 
 == Inspected Dependencies
@@ -101,7 +101,7 @@ resolving the blocker.
 |===
 | Dependency | Blocker | Resolution Required
 
-| unified-hexadeca-api | NO CANONICAL REPOSITORY IN ESTATE | **DO NOT USE.** This name refers to a non-existent or not-located repository. Use `zig-unified-hexadeca-adapter` instead, which IS in hyperpolymath estate.
+| unified-hexadeca-api | NO CANONICAL REPOSITORY IN ESTATE | **DO NOT USE.** This name (without the `zig-` prefix) refers to a non-existent or not-located repository. Use `zig-unified-hexadeca-api` instead, which may be in `boj-server` or `developer-ecosystem`.
 |===
 
 == Licence Compliance Status

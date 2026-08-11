@@ -17,9 +17,10 @@
 # can be treated as authoritative.
 #
 # Architecture note: FFI layer is PURE ZIG (no C), ABI layer is PURE IDRIS2.
-# The ABI adapter for estate integration is `zig-unified-hexadeca-adapter` (NOT
-# `unified-hexadeca-api`). The zig api adapter is in hyperpolymath estate.
-# See docs/architecture/estate-reconnaissance.adoc for details.
+# The estate API for integration is `zig-unified-hexadeca-api` (previously called
+# `zig-unified-hexadeca-adapter`). It may be in `boj-server` or `developer-ecosystem`
+# in the hyperpolymath estate. See docs/architecture/estate-reconnaissance.adoc.
+# Note: `unified-hexadeca-api` (without zig- prefix) is BLOCKED - no canonical repository.
 
 [rsr-profile]
 version = "1.0.0"
@@ -32,7 +33,7 @@ declares-against = "2.0.0-draft"
 # - AffineScript for application contracts
 # It is currently a CLI tool and library with formal proofs,
 # but no container, docs site, or benchmarks.
-# The ABI adapter is `zig-unified-hexadeca-adapter` (hyperpolymath estate).
+# The ABI adapter is `zig-unified-hexadeca-api` (hyperpolymath estate).
 capabilities = [
   "zig",                # zig/src/ - CLI executable, core hashing/ingestion, PURE ZIG FFI (NO C)
   "idris2",             # idris2/AuthorityWatch/ - formal domain model, invariants, PURE IDRIS2 ABI (NO C)
@@ -62,12 +63,9 @@ capabilities = [
 #   api-service        - Not a network daemon
 #
 # ESTATE INTEGRATION CLARIFICATION:
-#   The estate ABI adapter is `zig-unified-hexadeca-adapter` in hyperpolymath estate.
-#   This is NOT the same as `unified-hexadeca-api` (which is BLOCKED - no canonical repository).
-#   Neither `zig-unified-hexadeca-adapter` nor `unified-hexadeca-api` are in rsr-template-repo.
-#   They are in the hyperpolymath standards repo or other hyperpolymath estate repos.
+#   The estate API is `zig-unified-hexadeca-api` (previously `zig-unified-hexadeca-adapter`).
+#   It may be located in `boj-server` or `developer-ecosystem` in the hyperpolymath estate.
+#   It is NOT in rsr-template-repo.
+#   Note: `unified-hexadeca-api` (without zig- prefix) is BLOCKED - no canonical repository.
 #   See docs/architecture/estate-reconnaissance.adoc for full details.
-#
-# BLOCKED: unified-hexadeca-api - NO CANONICAL REPOSITORY LOCATED.
-# Do not confuse with `zig-unified-hexadeca-adapter` which is the correct estate adapter.
 omitted-rationale = "Declaring a capability this repo lacks would make the oracle score it against a module it does not carry — the over-scaffolding failure v2.0 fixes. See TEMPLATE-APPLICABILITY-POLICY.adoc."

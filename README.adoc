@@ -86,11 +86,12 @@ Authority Watch uses a *multi-layer architecture* for defence in depth with
 
 === Estate Integration
 
-**CRITICAL: Do not confuse these two names:**
+**IMPORTANT:** The estate API is `zig-unified-hexadeca-api` (previously called
+`zig-unified-hexadeca-adapter`). It may be located in the `boj-server` repo or
+`developer-ecosystem` in the hyperpolymath estate. It is NOT in rsr-template-repo.
 
-* `zig-unified-hexadeca-adapter` = **CORRECT** estate ABI adapter, exists in
-  hyperpolymath estate (NOT in rsr-template-repo)
-* `unified-hexadeca-api` = **BLOCKED**, no canonical repository located, do NOT use
+Note: `unified-hexadeca-api` (without the `zig-` prefix) is BLOCKED — no canonical
+repository was located. Do not use or fabricate.
 
 See `docs/architecture/estate-reconnaissance.adoc` for the full estate
 reconnaissance findings.
@@ -99,7 +100,7 @@ Integration targets (currently inspected, not integrated):
 
 * *typed-wasm*: Intended verified carrier
 * *Gossamer*: Operator console integration (bindings exist, integration staged)
-* *zig-unified-hexadeca-adapter*: In hyperpolymath estate, capability-gated
+* *zig-unified-hexadeca-api*: In hyperpolymath estate (possibly `boj-server`), capability-gated
 * *unified-hexadeca-api*: BLOCKED — no canonical repository located, do NOT use
 
 == First commands
