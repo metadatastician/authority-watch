@@ -1,32 +1,264 @@
-// SPDX-License-Identifier: PMPL-2.0-or-later
-= Roadmap
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= Roadmap — Authority Watch
+:toc:
+:icons: font
 
-== Milestone 1: manual precision core
+[.lead]
+This document outlines the planned milestones for Authority Watch, including
+the work required, success criteria, and dependencies for each milestone.
 
-Ontology, immutable observations, manual ingestion, deterministic diffs,
-review transitions, impact mapping, provisional bundles, and a local operator
-projection.
+== Overview
 
-== Milestone 2: official APIs
+Authority Watch is being developed in 6 sequential milestones, each building
+on the previous. The current focus is completing Milestone 1 (manual
+precision core) and beginning Milestone 2 (official APIs).
 
-Legislation.gov.uk Publication Log and structured documents, GOV.UK Content
-API and feeds, and source-health reporting.
+[cols="1,1,1,2"]
+|===
+| Milestone | Status | Priority | ETA
 
-== Milestone 3: professional material
+| Milestone 1: Manual Precision Core | 70% Complete | High | 2026-08-XX
+| Milestone 2: Official APIs | 0% Complete | High | 2026-09-XX
+| Milestone 3: Professional Material | 0% Complete | Medium | 2026-10-XX
+| Milestone 4: Consumer Integration | 0% Complete | Medium | 2026-11-XX
+| Milestone 5: NNTPS Review Mirror | 0% Complete | Low | 2026-12-XX
+| Milestone 6: Hosted Service | 0% Complete | Low | 2027-Q1
+|===
 
-SIP, JIEB, professional-code, same-URL document replacement, and
-email-assisted ingestion.
+== Milestone 1: Manual Precision Core
 
-== Milestone 4: consumer integration
+*Status:* 70% Complete (Core functionality implemented, RSR compliance added)
 
-Signed manifests, staging, compatibility and rollback checks, freshness, and
-`sim-insolvency` certificate withholding.
+*Goal:* Establish the foundation for all subsequent milestones with a
+strictly-controlled, manual-only precision core.
 
-== Milestone 5: NNTPS review mirror
+=== Work Items
 
-Auditable review threads and signed release/revocation notices.
+[cols="1,1,1,2"]
+|=== 
+| ID | Status | Priority | Description
 
-== Milestone 6: hosted service
+| M1-001 | Complete | High | Core ontology (AuthorityGrade, ReviewState, Freshness, TemporalFacts)
+| M1-002 | Complete | High | Zig executable with status, freshness, ingest commands
+| M1-003 | Complete | High | Safety invariants (canAdvance, canActivate) with unit tests
+| M1-004 | Complete | High | UK insolvency profile with 7 sources
+| M1-005 | Complete | High | RSR compliance scaffolding (.machine_readable/)
+| M1-006 | In Progress | High | Comprehensive documentation (README, EXPLAINME, AFFIRMATION, AUDIT, GOVERNANCE)
+| M1-007 | Not Started | Medium | Persistent observation storage (append-only ledger)
+| M1-008 | Not Started | Medium | Formal proof of review state properties (Idris2)
+|=== 
 
-Read API, Atom, authenticated review actions, redundant scheduling, backup,
-recovery, key management, and public status.
+=== Success Criteria
+
+* [x] Core types are defined and tested
+* [x] CLI commands work correctly
+* [x] Safety invariants prevent state bypass
+* [x] Unit tests cover all core functions
+* [x] Profile configuration is complete
+* [x] RSR compliance files are in place
+* [ ] Documentation is complete and accurate
+* [ ] Persistent storage is implemented
+* [ ] Formal proofs are complete
+
+=== Dependencies
+
+* None (this is the foundation milestone)
+
+== Milestone 2: Official APIs
+
+*Status:* 0% Complete (Not yet started)
+
+*Goal:* Implement automated source monitoring for official UK government
+sources with proper licence compliance and rate limiting.
+
+=== Work Items
+
+[cols="1,1,1,2"]
+|=== 
+| ID | Status | Priority | Description
+
+| M2-001 | Not Started | High | legislation.gov.uk API adapter with rate limiting
+| M2-002 | Not Started | High | GOV.UK Content API adapter
+| M2-003 | Not Started | High | Licence review and documentation for both sources
+| M2-004 | Not Started | Medium | UK Parliament API adapter
+| M2-005 | Not Started | Medium | Source health monitoring and reporting
+| M2-006 | Not Started | Medium | Error handling and retry logic
+| M2-007 | Not Started | Medium | Fixture generation for testing
+|=== 
+
+=== Success Criteria
+
+* [ ] legislation.gov.uk adapter is functional
+* [ ] GOV.UK adapter is functional
+* [ ] All licence terms are reviewed and documented
+* [ ] Rate limiting prevents API abuse
+* [ ] Error handling is robust
+* [ ] Tests cover all adapters
+
+=== Dependencies
+
+* Milestone 1 must be 100% complete
+* Licence review must be approved
+
+== Milestone 3: Professional Material
+
+*Status:* 0% Complete (Not yet started)
+
+*Goal:* Add support for professional sources (Statements of Insolvency
+Practice, Joint Insolvency Examination Board, professional codes).
+
+=== Work Items
+
+[cols="1,1,1,2"]
+|=== 
+| ID | Status | Priority | Description
+
+| M3-001 | Not Started | High | SIP (Statements of Insolvency Practice) adapter
+| M3-002 | Not Started | High | JIEB (Joint Insolvency Examination Board) adapter
+| M3-003 | Not Started | High | Professional code adapter
+| M3-004 | Not Started | Medium | Same-URL document replacement detection
+| M3-005 | Not Started | Medium | Email-assisted ingestion for manual sources
+| M3-006 | Not Started | Medium | Professional source licence review
+|=== 
+
+=== Success Criteria
+
+* [ ] SIP adapter is functional
+* [ ] JIEB adapter is functional
+* [ ] Professional code adapter is functional
+* [ ] Email ingestion is implemented
+* [ ] Same-URL replacement is detected correctly
+* [ ] All licence terms are reviewed
+
+=== Dependencies
+
+* Milestone 2 must be complete
+* Professional reviewer access must be arranged
+
+== Milestone 4: Consumer Integration
+
+*Status:* 0% Complete (Not yet started)
+
+*Goal:* Enable downstream consumers (primarily sim-insolvency) to receive
+and verify signed update bundles.
+
+=== Work Items
+
+[cols="1,1,1,2"]
+|=== 
+| ID | Status | Priority | Description
+
+| M4-001 | Not Started | High | Signed manifest format and verification
+| M4-002 | Not Started | High | Staging environment for bundle testing
+| M4-003 | Not Started | High | Compatibility checks between bundles
+| M4-004 | Not Started | High | Rollback checks and safety
+| M4-005 | Not Started | Medium | Freshness tracking and reporting
+| M4-006 | Not Started | Medium | sim-insolvency certificate withholding integration
+| M4-007 | Not Started | Medium | Consumer API for bundle retrieval
+|=== 
+
+=== Success Criteria
+
+* [ ] Signed manifest format is defined
+* [ ] Manifest verification works correctly
+* [ ] Staging environment is operational
+* [ ] Compatibility checks prevent breaking changes
+* [ ] Rollback is safe and tested
+* [ ] Freshness is tracked accurately
+* [ ] sim-insolvency integration is complete
+
+=== Dependencies
+
+* Milestone 3 must be complete
+* Signing infrastructure must be in place
+
+== Milestone 5: NNTPS Review Mirror
+
+*Status:* 0% Complete (Not yet started)
+
+*Goal:* Provide an auditable, append-only review mirror using the No-Nonsense
+NNTPS protocol for review thread storage and retrieval.
+
+=== Work Items
+
+[cols="1,1,1,2"]
+|=== 
+| ID | Status | Priority | Description
+
+| M5-001 | Not Started | High | NNTPS client implementation
+| M5-002 | Not Started | High | Review thread storage format
+| M5-003 | Not Started | Medium | Signed release/revocation notices
+| M5-004 | Not Started | Medium | Integration with review workflow
+| M5-005 | Not Started | Low | Public read API for review threads
+|=== 
+
+=== Success Criteria
+
+* [ ] NNTPS client is functional
+* [ ] Review threads are stored append-only
+* [ ] Release notices are signed
+* [ ] Revocation notices are signed
+* [ ] Integration with review workflow is complete
+
+=== Dependencies
+
+* Milestone 4 must be complete
+* No-Nonsense NNTPS must be available
+
+== Milestone 6: Hosted Service
+
+*Status:* 0% Complete (Not yet started)
+
+*Goal:* Deploy Authority Watch as a hosted service with API, scheduling,
+and monitoring capabilities.
+
+=== Work Items
+
+[cols="1,1,1,2"]
+|=== 
+| ID | Status | Priority | Description
+
+| M6-001 | Not Started | High | Read API for observations and bundles
+| M6-002 | Not Started | High | Atom feed for changes
+| M6-003 | Not Started | High | Authenticated review actions API
+| M6-004 | Not Started | Medium | Redundant scheduling and monitoring
+| M6-005 | Not Started | Medium | Backup and recovery procedures
+| M6-006 | Not Started | Medium | Key management infrastructure
+| M6-007 | Not Started | Medium | Public status page
+| M6-008 | Not Started | Low | Rate limiting and abuse prevention
+|=== 
+
+=== Success Criteria
+
+* [ ] Read API is operational
+* [ ] Atom feed is functional
+* [ ] Authenticated API is secure
+* [ ] Scheduling is redundant and reliable
+* [ ] Backup and recovery are tested
+* [ ] Key management is secure
+* [ ] Public status is available
+
+=== Dependencies
+
+* Milestone 5 must be complete
+* Hosting infrastructure must be arranged
+
+== Beyond Milestone 6
+
+Future work after Milestone 6 may include:
+
+* Additional jurisdictions beyond UK
+* Additional domains beyond insolvency
+* Web-based review interface
+* Machine learning-assisted classification (with human oversight)
+* Integration with other estate projects
+
+== Contributing
+
+See link:CONTRIBUTING.adoc[CONTRIBUTING] for information on how to
+contribute to any of these milestones.
+
+== Licence
+
+This document: CC-BY-SA-4.0

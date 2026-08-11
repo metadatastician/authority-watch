@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# rsr-profile.a2ml — this repo's declared RSR v2.0 capabilities.
+#
+# Authored in the A2ML record dialect (hyperpolymath/standards
+# a2ml/RECORD-DIALECT-SPEC.adoc). It declares which capabilities this repo has,
+# per TEMPLATE-APPLICABILITY-POLICY.adoc; the RSR v2.0 conformance oracle
+# (hypatia Hypatia.Rules.RsrConformance) uses `capabilities` to compute the
+# APPLICABLE criteria set — a gated criterion is scored only when its gating
+# capability appears below; everything else is `na` and excluded from the
+# denominator.
+#
+# authority-watch is a legal/regulatory change monitoring system with a
+# strictly-controlled pipeline for tracking authoritative documents. It
+# enforces a non-bypassable progression of review states before any document
+# can be treated as authoritative.
+
+[rsr-profile]
+version = "1.0.0"
+spec = "rsr-criteria-v2"
+declares-against = "2.0.0-draft"
+# Effective capability set for authority-watch.
+# The repo uses Zig for the CLI and core, Idris2 for formal invariants,
+# and AffineScript for application contracts. It is currently a CLI tool
+# and library with formal proofs, but no container, docs site, or benchmarks.
+capabilities = [
+  "zig",                # zig/src/ - CLI executable and core hashing/ingestion
+  "idris2",             # idris2/AuthorityWatch/ - formal domain model and invariants
+  "affinescript",       # affinescript/ - application contracts for domain and review
+  "bash",               # tools/check-prohibited-stack.sh + Justfile tasks
+  "cli",                # authority-watch executable with status/freshness/ingest commands
+  "library",            # authority_watch Zig module - core types and functions
+  "formal-proofs",      # Idris2 type-level invariants for review states and activation
+  "governance-tier",    # full GOVERNANCE.adoc + AGENTS.md + dependency policies
+]
+
+[notes]
+# Capabilities intentionally NOT declared (no corresponding code in tree):
+#   ffi                - No C FFI boundary; uses pure Zig, Idris2, AffineScript
+#   abi                - No formally specified ABI layer (yet)
+#   container          - No container/Containerfile or .devcontainer/
+#   reproducible-build - No build/guix.scm or stapeln configuration
+#   benchmarks        - No benches/ directory
+#   docs-site          - No docs site generation or GitHub Pages workflow
+#   published-package  - Not published as a registry artifact
+#   mobile             - No mobile app
+#   web-ui             - No browser UI
+#   api-service        - Not a network daemon
+omitted-rationale = "Declaring a capability this repo lacks would make the oracle score it against a module it does not carry — the over-scaffolding failure v2.0 fixes. See TEMPLATE-APPLICABILITY-POLICY.adoc."

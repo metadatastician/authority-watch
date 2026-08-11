@@ -1,0 +1,42 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= Descriptiles Directory
+:toc:
+
+This directory contains machine-readable project metadata in the A2ML record
+dialect. These files describe the project's state, context, and operational
+parameters in a format that can be consumed by tools, agents, and automation.
+
+== Files
+
+[cols="1,3"]
+|===
+| File | Purpose
+
+| `STATE.a2ml` | Current project state, maturity, milestones, and blockers
+| `META.a2ml` | Meta-level information: architecture decisions, practices, rationale
+| `ECOSYSTEM.a2ml` | Ecosystem context: dependencies, related projects, forge integration
+| `PLAYBOOK.a2ml` | Operational procedures: SOPs, incident response, quality gates
+|===
+
+== Usage
+
+These files are read by:
+
+* AI agents (via `0-AI-MANIFEST.adoc` and `.machine_readable/ai/`)
+* CI/CD pipelines (for project state validation)
+* Maintenance scripts (for milestone tracking)
+* Documentation generators (for consistency checks)
+
+All files should be kept in sync with the actual project state.
+
+== Format
+
+All files use the A2ML record dialect as defined in
+`hyperpolymath/standards/a2ml/RECORD-DIALECT-SPEC.adoc`.
+
+== Related files
+
+* `.machine_readable/rsr-profile.a2ml` — RSR capability declaration
+* `0-AI-MANIFEST.adoc` — AI agent entry point
+* `AGENTS.md` — Agent-specific rules

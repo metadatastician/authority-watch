@@ -1,0 +1,259 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= AFFIRMATION — Authority Watch Honesty Snapshot
+:toc:
+:icons: font
+
+[.lead]
+This is the *dated, signed honesty snapshot* of the authority-watch repository's
+true state as of the date below. It is the canonical statement of what is
+actually implemented, tested, and ready — not what we hope or plan.
+
+== Snapshot Metadata
+
+[cols="1,2"]
+|===
+| Field | Value
+
+| Affirmation ID | AW-AFFIRM-2026-08-11-001
+| Snapshot Date | 2026-08-11
+| Author | Jonathan D.A. Jewell (hyperpolymath)
+| Repository | metadatastician/authority-watch
+| Version | 0.1.0
+| Git Commit | (see git log)
+|===
+
+== Executive Summary
+
+Authority Watch is a *work in progress* with a functional manual core but
+*no production-ready automation*. The system enforces strict safety invariants
+at the code level, but the operational infrastructure (API adapters, signing,
+persistence) is not yet implemented.
+
+*What is complete:*
+
+* Core ontology (authority grades, review states, freshness, temporal facts)
+* Zig executable with three commands (status, freshness, ingest)
+* Safety invariants (canAdvance, canActivate) with unit tests
+* UK insolvency profile configuration (7 sources defined)
+* RSR compliance scaffolding
+
+*What is NOT complete:*
+
+* Automated source monitoring (all sources disabled)
+* API adapters for official sources (legislation.gov.uk, GOV.UK, etc.)
+* Production signing infrastructure
+* Persistent observation storage
+* Professional review workflow
+* Consumer integration (sim-insolvency)
+
+== Implementation Status by Component
+
+=== Zig Core (`zig/`)
+
+[cols="1,1,1,3"]
+|===
+| Component | Status | Coverage | Notes
+
+| `main.zig` | Complete | 100% | CLI dispatch for status, freshness, ingest
+| `core.zig` | Complete | 95% | All types, digest, canAdvance, canActivate
+| Unit tests | Complete | 100% | All core functions have test coverage
+|===
+
+*Truth claim:* The Zig core is functionally complete for the manual
+precision core. It compiles, runs, and passes all tests. The `ingest`
+command correctly computes SHA-256 digests and outputs observation
+candidates marked as "NOT AN AUTHORITATIVE RULE".
+
+*Gap:* No file persistence. Ingested documents are hashed but not stored.
+
+=== Idris2 Invariants (`idris2/`)
+
+[cols="1,1,1,3"]
+|===
+| Component | Status | Coverage | Notes
+
+| `Core.idr` | Complete | 100% | AuthorityGrade, TemporalFacts, SourceIdentity, ObservationIdentity, Freshness
+| `Review.idr` | Complete | 100% | ReviewState, CanAdvance, ReviewEvidence, PublicationClass, ActivationProof
+|===
+
+*Truth claim:* The Idris2 modules compile and define the complete domain
+model. The type system enforces that review states are distinct and
+transitions are explicit.
+
+*Gap:* No runtime integration with Zig. The Idris2 code currently exists
+as a parallel type definition, not as a compiled dependency.
+
+=== AffineScript Contracts (`affinescript/`)
+
+[cols="1,1,1,3"]
+|===
+| Component | Status | Coverage | Notes
+
+| `domain/Authority.affine` | Complete | 100% | All domain types (StableId, AuthorityGrade, RetrievalMethod, ReviewState, Freshness, AuthoritySource, TemporalFacts, SourceObservation, AuthorityChangeCandidate, ReviewRecord, UpdateBundle)
+| `review/Transitions.affine` | Complete | 100% | productionApprovalGate, TransitionDecision, TransitionRequest
+|===
+
+*Truth claim:* The AffineScript contracts are syntactically correct and
+define the complete application contract surface.
+
+*Gap:* No tooling to verify AffineScript contracts against Zig/Idris2
+implementations. The contracts exist as documentation, not as enforced
+boundaries.
+
+=== Profiles (`profiles/`)
+
+[cols="1,1,1,3"]
+|===
+| Profile | Status | Sources | Monitoring
+
+| uk-insolvency | Declared | 7 | All DISABLED
+|===
+
+*Truth claim:* The uk-insolvency profile is fully configured with 7
+sources covering legislation, government guidance, professional bodies,
+and case law.
+
+*Gap:* All sources have `enabled = false`. No automated monitoring is
+active. The profile status is `PROVISIONAL_UNREVIEWED`.
+
+=== Build System (`Justfile`, `build.zig`)
+
+[cols="1,1,1,3"]
+|===
+| Component | Status | Coverage | Notes
+
+| `Justfile` | Complete | 100% | doctor, build, run, ingest, test, lint, format, check, clean
+| `build.zig` | Complete | 100% | Zig build configuration with executable and tests
+|===
+
+*Truth claim:* `just check` runs lint, typecheck, and test successfully.
+`just build` produces a working executable. `just run` shows system status.
+`just ingest` computes digests correctly.
+
+*Gap:* No CI/CD pipeline configured. No automated build verification.
+
+== Safety Status
+
+=== Review State Transitions
+
+*Truth claim:* It is *impossible* to skip a review state transition.
+
+*Evidence:* The `canAdvance()` function in `zig/src/core.zig` uses a
+switch expression that returns `false` for any unlisted transition.
+The unit test `test "review states cannot be skipped"` verifies that
+`.observed` cannot advance to `.parsed` (skipping `.retrieved` and
+`.source_verified`).
+
+*Gap:* No integration test that verifies the entire pipeline end-to-end.
+
+=== Bundle Activation
+
+*Truth claim:* It is *impossible* to activate a bundle without satisfying
+all 8 gates.
+
+*Evidence:* The `canActivate()` function in `zig/src/core.zig` uses a
+conjunction (AND) of all 8 conditions. The unit tests verify that:
+
+* unsigned bundles cannot activate
+* revoked bundles cannot activate
+
+*Gap:* No test for the full combination of all 8 gates simultaneously.
+
+=== Data Integrity
+
+*Truth claim:* SHA-256 digests correctly detect any byte change.
+
+*Evidence:* The unit test `test "raw digest changes on any byte change"`
+verifies that "official source" and "official source." produce different
+digests.
+
+*Gap:* No test for large files or edge cases (empty files, etc.).
+
+== Operational Status
+
+=== Current State
+
+* Mode: Offline manual precision core
+* Automated acquisition: DISABLED
+* Production updates: DISABLED
+* Signing: NOT CONFIGURED
+* Persistence: NOT IMPLEMENTED
+* Monitoring: NO ACTIVE SOURCES
+
+=== What Works
+
+* `just doctor` — Shows tool versions
+* `just build` — Compiles the executable
+* `just test` — Runs unit tests (all pass)
+* `just run` — Shows system status
+* `just ingest <file>` — Computes SHA-256 digest, outputs observation candidate
+* `just check` — Runs lint, typecheck, test (all pass)
+
+=== What Does NOT Work
+
+* Automated source fetching — NO ADAPTERS IMPLEMENTED
+* Bundle building — HARD-BLOCKED in Justfile
+* Bundle signing — NO SIGNING INFRASTRUCTURE
+* Bundle publishing — HARD-BLOCKED in Justfile
+* Persistent storage — NOT IMPLEMENTED
+* Professional review — NO WORKFLOW IMPLEMENTED
+* Consumer integration — NOT IMPLEMENTED
+
+== Known Issues and Limitations
+
+[cols="1,1,1"]
+|===
+| ID | Severity | Description
+
+| AW-001 | Medium | No persistent storage for observations
+| AW-002 | Medium | No API adapters for official sources
+| AW-003 | Medium | No signing infrastructure
+| AW-004 | Low | No CI/CD pipeline
+| AW-005 | Low | Idris2 not integrated with Zig runtime
+| AW-006 | Low | No AffineScript verification tooling
+|===
+
+== Blockers to Production Use
+
+The following must be addressed before Authority Watch can be used in
+production:
+
+. [ ] Implement persistent observation storage (append-only ledger)
+. [ ] Implement at least one source adapter (legislation.gov.uk or GOV.UK)
+. [ ] Complete licence review for all enabled sources
+. [ ] Implement signing infrastructure with trusted keys
+. [ ] Implement professional review workflow with audit trail
+. [ ] Implement consumer integration (sim-insolvency)
+. [ ] Configure CI/CD pipeline with quality gates
+. [ ] Complete security review of all components
+
+== What Is Safe to Use NOW
+
+The following are safe for experimentation and development:
+
+* Manual ingestion of test files (`just ingest`)
+* Review of the domain model (Idris2, AffineScript)
+* Extension of the core types (Zig, Idris2)
+* Addition of new profiles (configuration only)
+* Development of source adapters (without enabling them)
+
+The following are NOT safe:
+
+* Enabling any source without licence review
+* Bypassing canAdvance() or canActivate() checks
+* Using Authority Watch for production legal determinations
+* Publishing any bundle as authoritative
+
+== Signing
+
+*This affirmation is unsigned.* The signing infrastructure for Authority
+Watch is not yet configured. When it is, this document will be signed
+with the maintainer's GPG key.
+
+---
+
+*Author:* Jonathan D.A. Jewell (hyperpolymath)
+*Date:* 2026-08-11
+*Status:* Unsigned (signing infrastructure pending)
+*Licence:* CC-BY-SA-4.0 (this document)

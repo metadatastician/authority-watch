@@ -1,0 +1,80 @@
+// SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# 0-AI-MANIFEST.a2ml — Machine-readable AI manifest for authority-watch
+#
+# This is the machine-readable counterpart to 0-AI-MANIFEST.adoc at the repo root.
+# It provides structured data for AI agents about how to interact with this repo.
+
+[ai-manifest]
+version = "0.2.0"
+last-updated = "2026-08-11"
+
+[project-identity]
+name = "authority-watch"
+owner = "metadatastician"
+forge = "github.com"
+
+[ai-rules]
+# What AI can do
+allowed = [
+  "Identify changed clauses in legal documents",
+  "Propose classifications for changes",
+  "Summarise diffs between document versions",
+  "Suggest impact links between changes",
+  "Propose test cases for review state transitions",
+  "Generate documentation",
+  "Suggest code improvements"
+]
+
+# What AI cannot do
+prohibited = [
+  "Determine legal effect conclusively",
+  "Approve a change",
+  "Choose an unsupported effective date",
+  "Mark a rule pack current",
+  "Sign a release",
+  "Transform observed material directly into an authoritative rule",
+  "Bypass review state transitions",
+  "Activate a bundle without human approval",
+  "Modify production observations",
+  "Commit private review material",
+  "Commit signing keys or credentials"
+]
+
+[agent-requirements]
+# Requirements for AI agent suggestions
+suggestion-must-include = [
+  "model-or-tool-identity",
+  "prompt-or-operation",
+  "input-observation-identifiers",
+  "output-digest",
+  "timestamp",
+  "human-disposition"
+]
+
+# The system must remain operable without external AI
+independence-required = true
+
+[context-boundaries]
+# Areas where AI assistance is explicitly bounded
+legal-determination = "human-only"
+production-approval = "human-only"
+effective-date-selection = "human-only"
+rule-pack-current-marking = "human-only"
+release-signing = "human-only"
+
+[tooling]
+# Tools AI agents may use
+allowed-tools = ["grep", "git", "zig", "idris2", "just", "sha256sum"]
+prohibited-tools = ["curl", "wget"]  # No external fetching without explicit permission
+
+[workflow-integration]
+# How AI fits into the review workflow
+review-assistance = "suggest-only"
+classification-assistance = "suggest-only"
+impact-analysis = "suggest-only"
+test-generation = "suggest-only"
+
+# All final decisions remain human
+final-authority = "human"

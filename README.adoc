@@ -4,64 +4,171 @@
 :toc: left
 :reproducible:
 
+// ── Licensing ───────────────────────────────────────────────────────────────
+image:https://img.shields.io/badge/Code-PMPL--2.0-or-later-blue.svg[Code licence: PMPL-2.0-or-later,link="https://opensource.org/licenses/MPL-2.0"]
+image:https://img.shields.io/badge/Docs-CC--BY--SA--4.0-blue.svg[Docs licence: CC-BY-SA-4.0,link="https://creativecommons.org/licenses/by-sa/4.0/"]
+
+// ── Standard & quality gates ────────────────────────────────────────────────
+image:https://img.shields.io/badge/RSR-Rhodium_Standard-9C27B0[Rhodium Standard Repository,link="https://github.com/hyperpolymath/rhodium-standard-repositories"]
+
 [.lead]
-A source-attributed, human-governed service for observing authoritative
-publications, detecting meaningful changes, assessing possible downstream
-impact, and publishing signed update bundles for regulated software.
+A *high-assurance legal/regulatory change monitoring system* with a
+strictly-controlled pipeline for tracking authoritative documents.
+
+Authority Watch observes official publications, detects changes, tracks
+their progression through a formal review workflow, and — only after
+explicit human approval — publishes signed update bundles for regulated
+software consumers.
 
 [IMPORTANT]
 ====
-Authority Watch is not a lawyer, legal advice, an autonomous legal interpreter,
-or an automatic production updater. Observation, textual change, possible
-effect, human interpretation, approved rule change, and signed publication are
-different states. The software must never collapse them.
+Authority Watch is *not* a lawyer, does *not* provide legal advice, and is
+*not* an autonomous legal interpreter or automatic production updater.
+
+The following are *distinct states* that must never be conflated:
+
+* *Observation*: A document was retrieved and hashed
+* *Interpretation*: A human determined what the document means
+* *Approval*: A human authorized the interpretation
+* *Publication*: The approved interpretation was published
+* *Consumption*: A downstream system consumed the published update
+
+The software must never collapse or bypass these distinctions.
 ====
+
+== What this is
+
+Authority Watch is a *legal document monitoring framework* that enforces a
+non-bypassable review pipeline before any authoritative document can be
+activated. It is designed for high-stakes domains (currently UK insolvency
+law) where incorrect interpretation or premature activation could have
+serious consequences.
+
+The system currently operates in *offline, manual-only mode* with all
+automated monitoring disabled. It provides the foundation for:
+
+* Immutable observation records with SHA-256 digests
+* Strict review state transitions (37 states, enforced at type level)
+* Bundle activation gates (8 simultaneous conditions)
+* Profile-based source configuration (currently uk-insolvency)
+* Separation of execution (Zig), invariants (Idris2), and contracts (AffineScript)
 
 == Current status
 
-The repository contains the foundation and executable manual precision core.
-It models immutable observations, separate temporal facts, review-state
-transitions, candidate impacts, freshness, and activation gates. The first
-profile is `uk-insolvency`; its first consumer contract is
-`metadatastician/sim-insolvency`.
+The repository contains the *foundation and executable manual precision core*.
+
+* Core ontology: COMPLETE (authority grades, review states, freshness, temporal facts)
+* Zig executable: COMPLETE (status, freshness, ingest commands)
+* Safety invariants: COMPLETE (canAdvance, canActivate with unit tests)
+* UK insolvency profile: DECLARED (7 sources defined, all monitoring DISABLED)
+* Source adapters: NOT YET IMPLEMENTED (API integrations are capability-gated)
+* Production signing: CAPABILITY-BLOCKED (requires trust infrastructure)
 
 No legal source represented here has been professionally interpreted or
 approved. Automated source monitoring and production signing remain
 capability-gated until their source terms, adapters, and trust operations have
-been reviewed.
+been reviewed and the maintenance gates are satisfied.
 
 == Architecture
 
-* AffineScript declares the generic authority, observation, change, impact,
-  review, bundle, and consumer contracts.
-* Pure Zig implements the executable offline core and host boundaries.
-* Idris2 defines proof-bearing identities, temporal distinctions, legal review
-  transitions, and bundle activation constraints.
-* typed-wasm and Gossamer are intended deployment and operator-shell
-  integrations; current capability findings are recorded in
-  `docs/architecture/estate-reconnaissance.adoc`.
+Authority Watch uses a *three-layer architecture* for defence in depth:
+
+* *AffineScript*: Declares the generic authority, observation, change, impact,
+  review, bundle, and consumer contracts. The principal application contract
+  layer.
+* *Zig*: Implements the executable offline core and host boundaries. Handles
+  file ingestion, SHA-256 digesting, and CLI interface.
+* *Idris2*: Defines proof-bearing identities, temporal distinctions, legal
+  review transitions, and bundle activation constraints. Type-level
+  enforcement of safety invariants.
+
+Integration targets (currently inspected, not integrated):
+
+* *typed-wasm*: Intended verified carrier
+* *Gossamer*: Operator console integration (bindings exist, integration staged)
+* *unified-hexadeca-api*: BLOCKED — no canonical repository located
 
 == First commands
 
 [source,console]
 ----
+# Check prerequisites
 just doctor
+
+# Build the executable
 just build
-just test
+
+# Run all checks (lint, typecheck, test)
+just check
+
+# Show system status
 just run
+
+# Ingest an official document (manual only)
 just ingest path/to/official-document
 ----
 
-Manual ingestion produces an observation digest only. It cannot create an
-approved interpretation or publish a rule pack.
+Manual ingestion produces an *observation digest only*. It explicitly states:
+"MANUAL OBSERVATION CANDIDATE — NOT AN AUTHORITATIVE RULE". It cannot create
+an approved interpretation or publish a rule pack.
+
+== Review pipeline
+
+Documents must progress through this exact sequence:
+
+[graphviz]
+----
+digraph ReviewPipeline {
+  rankdir=LR;
+  observed -> retrieved -> source_verified -> parsed -> diffed -> machine_classified -> triage_required -> impact_candidate_prepared -> first_review_completed -> second_review_completed -> approved -> tested -> signed -> published -> consumed;
+  published -> revoked_after_publication;
+  observed [shape=box,style=filled,fillcolor=lightgrey];
+  published [shape=box,style=filled,fillcolor=lightgrey];
+  consumed [shape=box,style=filled,fillcolor=lightgrey];
+}
+----
+
+Each transition is validated by `canAdvance(from, to)`. Skipping is impossible.
+
+== Activation requirements
+
+Before a bundle can activate, `canActivate()` requires ALL of:
+
+* review_state is `.signed` or `.published`
+* freshness is `.current_verified` or `.current_provisional`
+* has_signature == true
+* signature_trusted == true
+* tests_passed == true
+* compatibility_declared == true
+* effective_dates_explicit == true
+* rollback_safe == true
+* revoked == false
 
 == Data boundary
 
 Production source archives, operator state, reviews, credentials, and signing
-keys are deliberately excluded from Git. Only small, licensed, attributed test
-fixtures may be committed.
+keys are *deliberately excluded* from Git. Only small, licensed, attributed
+test fixtures may be committed.
+
+All observations are *immutable* once created. Corrections supersede but do
+not erase their predecessors (append-only ledger pattern).
+
+== Profiles
+
+Currently defined:
+
+* `uk-insolvency`: UK insolvency authority monitoring
+  * Status: PROVISIONAL_UNREVIEWED
+  * 7 sources configured (all DISABLED)
+  * Target consumer: metadatastician/sim-insolvency
+
+See `profiles/uk-insolvency/` for source registry and watchlists.
 
 == Licence
 
 Original code and documentation are licensed under
 `PMPL-2.0-or-later`. Per-file SPDX declarations are authoritative.
+
+Prose documentation is `CC-BY-SA-4.0`.
+
+See link:LICENSE[LICENSE] and link:LICENSES/[LICENSES/] for full text.

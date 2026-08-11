@@ -1,0 +1,115 @@
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# PLAYBOOK.a2ml — Operational playbook for authority-watch
+#
+# This file defines the standard operating procedures, incident response,
+# and common workflows for the authority-watch project.
+
+[metadata]
+version = "0.1.0"
+last-updated = "2026-08-11"
+
+[standard-operating-procedures]
+# Day-to-day operations
+
+{ id = "SOP-001", title = "Ingesting an official source file", steps = [
+  "Run: authority-watch ingest <path-to-official-file>",
+  "Verify SHA-256 digest matches expected",
+  "Record observation with source_id, canonical_uri, licence_id",
+  "Tag as PROVISIONAL - NOT AUTHORITATIVE",
+  "Do NOT approve or publish automatically"
+], owner = "curator", frequency = "as-needed" }
+
+{ id = "SOP-002", title = "Running the review pipeline", steps = [
+  "Start at state: observed",
+  "Progress through: retrieved -> source_verified -> parsed -> diffed",
+  "Machine classification: machine_classified",
+  "Human triage: triage_required -> impact_candidate_prepared",
+  "First review: first_review_completed",
+  "Second review: second_review_completed (required for production)",
+  "Approval: approved",
+  "Testing: tested",
+  "Signing: signed",
+  "Publication: published",
+  "Activation: only if canActivate() returns true"
+], owner = "reviewer", frequency = "per-change" }
+
+{ id = "SOP-003", title = "Checking system status", steps = [
+  "Run: authority-watch status",
+  "Review profile freshness",
+  "Verify all sources are in expected state",
+  "Check for disabled monitoring (current state: all disabled)"
+], owner = "operator", frequency = "daily" }
+
+{ id = "SOP-004", title = "Checking freshness for a profile", steps = [
+  "Run: authority-watch freshness <profile-name>",
+  "Note: Currently returns UNSUPPORTED for all profiles",
+  "No professionally reviewed rule pack is active",
+  "No active source-health ledger exists"
+], owner = "operator", frequency = "as-needed" }
+
+[incident-response]
+
+{ id = "IR-001", title = "False positive activation detected", severity = "critical", steps = [
+  "IMMEDIATE: Halt all bundle activation",
+  "Verify canActivate() gates were bypassed",
+  "Check signature verification",
+  "Check test results",
+  "Check effective dates",
+  "Rollback to last known good state",
+  "Post-incident review required"
+], owner = "safety-officer", escalation = "immediate" }
+
+{ id = "IR-002", title = "State transition bypass detected", severity = "critical", steps = [
+  "IMMEDIATE: Freeze review pipeline",
+  "Verify canAdvance() was bypassed",
+  "Check for code changes to ReviewState",
+  "Check for code changes to canAdvance()",
+  "Audit all recent state transitions",
+  "Rollback and re-review all affected documents"
+], owner = "safety-officer", escalation = "immediate" }
+
+{ id = "IR-003", title = "Licence violation detected", severity = "high", steps = [
+  "Halt ingestion from affected source",
+  "Review source terms and conditions",
+  "Remove any ingested material with unclear licence",
+  "Update DEPENDENCIES.adoc with licence review date",
+  "Mark source as BLOCKED until licence is verified"
+], owner = "legal-reviewer", escalation = "24-hours" }
+
+{ id = "IR-004", title = "Digest collision detected", severity = "high", steps = [
+  "IMMEDIATE: Quarantine affected observations",
+  "Verify SHA-256 implementation",
+  "Check for hash truncation",
+  "Check for encoding issues",
+  "Recompute all digests for affected source",
+  "Investigate potential security issue"
+], owner = "security-officer", escalation = "immediate" }
+
+[quality-gates]
+
+{ id = "QG-001", title = "Review state transitions", gate = "canAdvance(from, to) must return true", automated = false, owner = "system" }
+
+{ id = "QG-002", title = "Bundle activation", gate = "canActivate(gate) must return true", automated = false, owner = "system" }
+
+{ id = "QG-003", title = "Production bundle requirement", gate = "Must have two independent reviewers", automated = false, owner = "governance" }
+
+{ id = "QG-004", title = "Signing requirement", gate = "All production bundles must be signed with trusted key", automated = false, owner = "security" }
+
+{ id = "QG-005", title = "Test requirement", gate = "All tests must pass before activation", automated = true, owner = "ci" }
+
+[escalation-paths]
+# Who to contact for what
+
+{ issue-type = "Safety bypass", contact = "safety-officer@metadatastician.dev", response-time = "immediate" }
+{ issue-type = "Legal interpretation", contact = "legal-reviewer@metadatastician.dev", response-time = "24-hours" }
+{ issue-type = "Technical defect", contact = "maintainer@metadatastician.dev", response-time = "48-hours" }
+{ issue-type = "Feature request", contact = "issues@metadatastician.dev", response-time = "1-week" }
+
+[communication-channels]
+# Where discussions happen
+
+{ channel = "GitHub Issues", purpose = "Bug reports, feature requests", audience = "public" }
+{ channel = "GitHub Discussions", purpose = "Design discussions, Q&A", audience = "public" }
+{ channel = "Security Advisories", purpose = "Security vulnerabilities", audience = "private" }

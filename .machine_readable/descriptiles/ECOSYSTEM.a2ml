@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# ECOSYSTEM.a2ml — Ecosystem and dependency context for authority-watch
+
+[metadata]
+version = "0.1.0"
+last-updated = "2026-08-11"
+
+[project-identity]
+name = "authority-watch"
+owner = "metadatastician"
+forge = "github.com"
+full-name = "metadatastician/authority-watch"
+
+[licensing]
+primary-license = "PMPL-2.0-or-later"
+docs-license = "CC-BY-SA-4.0"
+license-files = ["LICENSE", "LICENSES/"]
+
+[dependencies]
+# Runtime dependencies
+zig = "0.16.x"
+idris2 = "0.7.x"
+
+# Build dependencies
+build-tool = "Zig build system"
+task-runner = "just"
+
+# Inspected but not integrated
+gossamer = "inspected - bindings exist, integration staged"
+typed-wasm = "inspected - intended verified carrier"
+unified-hexadeca-api = "blocked - no canonical repository located"
+proven-tests-and-benches = "inspected - Idris2 test taxonomy reusable"
+no-nonsense-nntps = "inspected - reader/profile integration only"
+snifs = "inspected - BEAM/Wasm safety design not currently needed"
+
+[related-projects]
+upstream = ["hyperpolymath/rsr-template-repo"]
+downstream = ["metadatastician/sim-insolvency"]
+peers = ["hyperpolymath/a2ml-ecosystem", "hyperpolymath/proven"]
+
+[forge-integration]
+github-actions = true
+gitlab-ci = false
+bitbucket-pipelines = false
+multi-forge-mirroring = "pending"
+
+[registry-status]
+is-registered = false
+registry-target = "none"  # none | npm | crates.io | hex.pm | julia | etc.
+
+[consumers]
+primary-consumer = "metadatastician/sim-insolvency"
+consumer-type = "internal"
+consumption-method = "direct-source"
+
+[ecosystem-links]
+homepage = "https://github.com/metadatastician/authority-watch"
+repository = "https://github.com/metadatastician/authority-watch"
+issues = "https://github.com/metadatastician/authority-watch/issues"
+pull-requests = "https://github.com/metadatastician/authority-watch/pulls"

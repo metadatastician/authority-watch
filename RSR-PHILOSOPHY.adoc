@@ -1,0 +1,155 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= RSR Philosophy — Authority Watch Implementation
+:toc:
+:icons: font
+
+[.lead]
+The Rhodium Standard Repository (RSR) philosophy as applied to _authority-watch_.
+This document states the operating principles that govern how work is done in
+this repository, aligning with the estate-wide RSR standards.
+
+== The Load-Bearing Three
+
+These three principles describe the *order* and *manner* in which work is
+undertaken in authority-watch.
+
+=== Holes Before Goals
+
+Fix soundness holes before building features, optimising, or polishing
+documentation. In authority-watch, a "hole" is anywhere the system can be
+wrong without saying so:
+
+* An unproven review state transition that could be bypassed
+* An unchecked input to the digest computation
+* A `TODO` that load-bearing safety code depends on
+* A claim about legal effect that no human has verified
+
+Goals — such as adding new source adapters, improving performance, or
+expanding documentation — are everything you would rather be doing. The
+discipline is to let the holes set the agenda, not the goals.
+
+*Example*: Before adding a legislation.gov.uk API adapter (goal), we must
+verify that the licence terms allow automated access (hole). The adapter
+cannot be merged until the licence review is documented.
+
+=== Always Fail Loudly
+
+No silent green. In authority-watch, this means:
+
+* A review state transition that bypasses `canAdvance()` must fail visibly
+* A bundle activation that bypasses `canActivate()` must fail visibly
+* A digest mismatch must fail the ingestion, not degrade quietly
+* A missing licence review must block the source adapter, not log a warning
+
+A check that cannot fail is not a check. A fallback that hides a broken
+precondition is a forged result. When something is wrong, the system must
+say so — visibly, early, and in a way that stops the line.
+
+*Implementation*: The `canAdvance()` and `canActivate()` functions return
+`bool`, not `Result`. If they return `false`, the operation must halt. There
+are no "soft" failures in the review pipeline.
+
+=== Solutions at Source
+
+Fix the canonical, upstream origin of a problem — never patch the
+downstream symptom.
+
+In authority-watch, this means:
+
+* If a source adapter has licence issues, fix the licence review process
+  (source), not the adapter's error handling (symptom)
+* If review state transitions are being bypassed, fix the `canAdvance()`
+  implementation (source), not the caller's checks (symptom)
+* If multiple profiles have the same configuration error, fix the profile
+  template (source), not each profile individually (symptom)
+
+Two obligations follow:
+
+1. *Find the source.* Before acting, trace the thing back to where it is
+   actually defined. In authority-watch, the source is typically in:
+   `zig/src/core.zig` (safety invariants), `idris2/AuthorityWatch/` (type
+   definitions), or `profiles/<profile>/` (configuration).
+
+2. *Be mindful of up- and downstream.* A change at a source propagates.
+   Before modifying `canAdvance()`, know that it affects all review pipelines.
+   A correct fix that breaks a consumer is not yet a fix.
+
+== The Full Doctrine
+
+Beyond the three core principles, authority-watch adheres to the full
+RSR Doctrine:
+
+* **Ground-truth by running the tool**: The source of truth is the code
+  and its execution, not status documentation. The `just check` command
+  runs linting, typechecking, and tests to establish ground truth.
+
+* **Distrust the neural for exactness**: Licences, invariants, and equivalence
+  belong to formal verification (Idris2) and human review, not LLM inference.
+
+* **Squabble, don't bypass**: Reach green by satisfying the gate (e.g.,
+  getting two independent reviews), never by admin override.
+
+* **No automated licence edits**: Licence terms are human-reviewed and
+  explicitly recorded in DEPENDENCIES.adoc.
+
+* **No deletion by access recency**: Source configurations are not deleted
+  just because they are currently disabled. They remain for auditability.
+
+* **Wire first**: Implement the safety check before the feature that needs it.
+
+* **Always sign**: Production bundles must be signed with a trusted key.
+
+* **Report faithfully**: No overclaim. If a document is "observed", don't
+  call it "approved".
+
+* **Stop-first on costly actions**: Bundle activation, publication, and
+  signing are costly and outward-facing. Stop and verify before proceeding.
+
+* **Boundaries are real**: The separation between Zig (execution), Idris2
+  (invariants), and AffineScript (contracts) is not just architectural —
+  it is a safety boundary.
+
+* **Equivalence as identity**: Two documents with the same digest are the
+  same document. Two review states are the same only if they have the same
+  enum value.
+
+== Authority-Watch-Specific Principles
+
+=== Defence in Depth
+
+authority-watch uses multiple layers of protection:
+
+1. **Type-level**: Idris2 enforces that review states are distinct and
+   transitions are explicit.
+2. **Runtime**: Zig's `canAdvance()` and `canActivate()` functions enforce
+   safety checks at execution time.
+3. **Process**: The Justfile and AGENTS.md enforce that humans review
+   all production changes.
+
+=== Separation of Concerns
+
+* *Observation*: What was published (recorded by the system)
+* *Interpretation*: What it means (determined by human reviewer)
+* *Approval*: Whether it is accepted (determined by human approver)
+* *Publication*: Whether it is published (controlled by the system)
+
+These must never be conflated. The system can observe without interpreting,
+record without approving, and store without publishing.
+
+=== No Implicit Trust
+
+Trust is explicit and earned:
+
+* A source is trusted only after licence review
+* A document is authoritative only by virtue of its official origin
+* A bundle is activatable only after satisfying all `canActivate()` gates
+* A review is complete only after satisfying the required number of reviewers
+
+== Status
+
+* *Licence*: This document is CC-BY-SA-4.0 (documentation)
+* *Canon*: `hyperpolymath/standards` is the source of truth for these
+  principles; `hyperpolymath/manifesto` states the doctrine in the owner's voice.
+* *Local extension*: This file operationalises the RSR philosophy for
+  authority-watch, adding domain-specific examples and interpretations.

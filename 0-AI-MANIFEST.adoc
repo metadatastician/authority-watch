@@ -1,13 +1,84 @@
 // SPDX-License-Identifier: PMPL-2.0-or-later
-= AI Use Manifest
+// Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+= AI Use Manifest — Authority Watch
+:toc:
+:icons: font
 
-Machine assistance may identify changed clauses, propose classifications,
-summarise diffs, suggest impact links, and propose tests.
+[.lead]
+This document is the *universal entry point* for AI agents working in this
+repository. It defines the boundaries, constraints, and expectations for
+machine assistance in the _authority-watch_ project.
 
-Machine assistance may not determine legal effect conclusively, approve a
-change, choose an unsupported effective date, mark a rule pack current, sign a
-release, or transform observed material directly into an authoritative rule.
+== Overview
 
-Every retained machine suggestion must record the model or tool identity,
-prompt or operation, input observation identifiers, output digest, timestamp,
-and human disposition. The system must remain operable without external AI.
+Authority Watch is a high-assurance legal/regulatory change monitoring system.
+AI agents may assist with analysis, classification, and documentation, but
+*human review and approval are always required* for any authoritative determination.
+
+== What AI May Do
+
+AI assistance is permitted for:
+
+* Identifying changed clauses in legal documents
+* Proposing classifications for detected changes
+* Summarising diffs between document versions
+* Suggesting impact links between changes
+* Proposing test cases for review state transitions
+* Generating documentation and examples
+* Suggesting code improvements and refactorings
+
+== What AI May NOT Do
+
+AI assistance is *prohibited* from:
+
+* Determining legal effect conclusively
+* Approving any change or rule pack
+* Choosing an unsupported effective date
+* Marking any rule pack as "current"
+* Signing any release or bundle
+* Transforming observed material directly into an authoritative rule
+* Bypassing any review state transition (see `ReviewState` in code)
+* Activating any bundle without explicit human approval
+* Modifying production observations
+* Committing private review material, signing keys, or credentials
+
+== Requirements for Retained AI Suggestions
+
+Every machine suggestion that is retained *must* record:
+
+. The model or tool identity (e.g., "Mistral Vibe", "Claude Code")
+. The prompt or operation that generated it
+. The input observation identifiers (e.g., SHA-256 digest of source)
+. The output digest (SHA-256 of the generated content)
+. The timestamp of generation
+. The human disposition (accepted/modified/rejected)
+
+== System Independence
+
+The system *must* remain fully operable without external AI assistance.
+No production workflow may depend on AI availability.
+
+== Context References
+
+For detailed machine-readable constraints, see:
+
+* `.machine_readable/0-AI-MANIFEST.a2ml` — Structured AI constraints
+* `.machine_readable/rsr-profile.a2ml` — RSR capability declaration
+* `AGENTS.md` — Agent-specific operational rules
+* `zig/src/core.zig` — Core safety invariants (`canAdvance`, `canActivate`)
+* `idris2/AuthorityWatch/Review.idr` — Formal review state definitions
+
+== Safety Principles
+
+. *Observation is not interpretation.* A document may be observed without being understood.
+. *Interpretation is not approval.* A document may be understood without being approved.
+. *Approval is not publication.* An approved change may remain unpublished.
+. *Publication is not truth.* A published rule is authoritative only by virtue of its source, not by being in this system.
+
+== Agent Protocol
+
+. Read this file first
+. Consult `AGENTS.md` for project-specific rules
+. Check `.machine_readable/ai/` for additional constraints
+. Verify all suggestions against human review requirements
+. Never claim a machine-generated result is authoritative

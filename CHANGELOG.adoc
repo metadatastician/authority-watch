@@ -1,9 +1,135 @@
-// SPDX-License-Identifier: PMPL-2.0-or-later
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 = Changelog
+:toc:
+:icons: font
+
+[.lead]
+This file records all notable changes to the Authority Watch project.
+Changes are grouped by release and ordered chronologically.
 
 == Unreleased
 
-* Establish the generic authority/change ontology and safety boundary.
-* Add the offline Zig manual precision core and invariants.
-* Add the initial `uk-insolvency` source registry.
-* Record estate reconnaissance and capability gates.
+=== Core Ontology and Safety Boundary (2026-07-XX)
+
+* Establish the generic authority/change ontology:
+  ** AuthorityGrade (FormalPrimary, FormalProfessional, OfficialGuidance, Prospective, SecondaryCommentary)
+  ** ReviewState (37 states for document lifecycle)
+  ** Freshness (9 states for source health)
+  ** TemporalFacts (17 legal date fields)
+* Define strict safety boundary: observation ≠ interpretation ≠ approval ≠ publication
+* Implement non-bypassable review state transitions via `canAdvance()`
+* Implement bundle activation gates via `canActivate()` with 8 simultaneous conditions
+
+=== Zig Manual Precision Core (2026-07-XX)
+
+* Add Zig executable (`authority-watch`) with three commands:
+  ** `status` — Show system state and configuration
+  ** `freshness <profile>` — Check profile freshness status
+  ** `ingest <file>` — Compute SHA-256 digest of official source file
+* Implement SHA-256 digest computation using Zig standard library
+* Add unit tests for digest uniqueness and review state transitions
+* Add type definitions mirroring Idris2 domain model
+
+=== Initial Profile: UK Insolvency (2026-07-XX)
+
+* Add `uk-insolvency` profile with full configuration:
+  ** Profile manifest (PROVISIONAL_UNREVIEWED status)
+  ** Source registry (7 sources: legislation.gov.uk, GOV.UK, UK Parliament, SIP, JIEB, Gazette, Find Case Law)
+  ** Watchlist (Insolvency Act 1986, CDDA 1986, IEWR 2016, CIGA 2020)
+* All sources configured with:
+  ** Authority grade (A, B, C, D)
+  ** Jurisdiction and coverage
+  ** Official and machine URIs
+  ** Licence terms (REVIEW_REQUIRED where applicable)
+  ** Retrieval method and expected cadence
+  ** Enabled = false (all monitoring disabled)
+
+=== Estate Reconciliation (2026-07-XX)
+
+* Record capability findings for estate integrations:
+  ** Gossamer: AffineScript bindings exist, integration staged
+  ** typed-wasm: Intended verified carrier, integration capability-gated
+  ** unified-hexadeca-api: BLOCKED — no canonical repository located
+  ** SNIFS: BEAM/Wasm safety design not currently needed
+  ** No-Nonsense NNTPS: Reader/profile integration only
+  ** proven-tests-and-benches: Idris2 test taxonomy reusable
+
+== v0.1.0 — Foundation Release (Planned: 2026-08-XX)
+
+This is the first tagged release. It establishes the foundation for:
+
+* Manual precision core with strict safety invariants
+* Complete domain model for legal document monitoring
+* RSR-compliant repository structure
+* Comprehensive documentation (README, EXPLAINME, AFFIRMATION, AUDIT, GOVERNANCE)
+
+=== Added
+
+* RSR compliance scaffolding:
+  ** `.machine_readable/` directory with rsr-profile.a2ml
+  ** Machine-readable descriptiles (STATE, META, ECOSYSTEM, PLAYBOOK)
+  ** Machine-readable AI manifest
+  ** RSR-PHILOSOPHY.adoc
+* Documentation:
+  ** README.adoc — Project overview with badges and architecture
+  ** EXPLAINME.adoc — Engineering deep-dive with code mappings
+  ** AFFIRMATION.adoc — Honesty snapshot of current state
+  ** AUDIT.adoc — Release audit gate with criteria
+  ** GOVERNANCE.adoc — Roles, responsibilities, decision-making
+* Enhanced existing files:
+  ** 0-AI-MANIFEST.adoc — Expanded with detailed constraints
+  ** AGENTS.md — Comprehensive agent rules
+  ** CHANGELOG.adoc — This file (structured format)
+  ** CONTRIBUTING.adoc — Updated with contribution guidelines
+  ** DEPENDENCIES.adoc — Updated with licence review status
+  ** ROADMAP.adoc — 6 milestones with completion tracking
+
+=== Changed
+
+* Updated licence headers to include copyright and author
+* Standardized SPDX-License-Identifier format across all files
+* Added table of contents and icons to documentation
+* Improved cross-references between documentation files
+
+=== Fixed
+
+* No fixes in this release (initial release)
+
+=== Removed
+
+* No removals in this release (initial release)
+
+== Template
+
+For future entries, use this template:
+
+----
+== vX.Y.Z — Release Name (YYYY-MM-DD)
+
+=== Added
+* Feature 1
+* Feature 2
+
+=== Changed
+* Change 1
+* Change 2
+
+=== Fixed
+* Bug 1
+* Bug 2
+
+=== Removed
+* Deprecated feature 1
+
+=== Security
+* CVE-XXXX-XXXX: Description and mitigation
+
+=== Migration
+* Breaking change 1: Migration instructions
+* Breaking change 2: Migration instructions
+----
+
+== Licence
+
+This document: CC-BY-SA-4.0

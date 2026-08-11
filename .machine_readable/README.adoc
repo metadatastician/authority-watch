@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= Machine-Readable Directory
+:toc:
+
+This directory contains structured, machine-readable metadata for the
+_authority-watch_ repository. All files in this tree use the A2ML record dialect
+unless otherwise noted.
+
+== Directory structure
+
+[cols="1,3"]
+|===
+| Path | Purpose
+
+| `rsr-profile.a2ml` | RSR v2.0 capability declaration for conformance scoring
+| `ai/` | AI agent configuration and constraints
+| `configs/` | Tool configuration files (stapeln, etc.)
+| `contractiles/` | Formal contract specifications
+| `descriptiles/` | Project metadata (STATE, META, ECOSYSTEM, etc.)
+| `policies/` | Policy declarations
+| `scripts/` | Automation scripts
+| `self-validating/` | Self-validation checks
+| `arrival-pack/` | Arrival pack for new contributor onboarding
+|===
+
+== Key files
+
+* `rsr-profile.a2ml`: Declares the repo's RSR capabilities (zig, idris2, affinescript,
+  bash, cli, library, formal-proofs, governance-tier)
+* See subdirectory README files for detailed descriptions
+
+== Usage
+
+Tools and agents should read `0-AI-MANIFEST.adoc` at the repo root first, then
+consult the relevant files in this directory for detailed metadata.

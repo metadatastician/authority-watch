@@ -1,0 +1,142 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= AUDIT — Authority Watch Release Audit Gate
+:toc:
+:icons: font
+
+[.lead]
+This is the *release audit gate* for Authority Watch. No release may be published
+without a dated, signed entry in this file attesting that all audit criteria
+have been satisfied.
+
+== Audit Gate Criteria
+
+A release passes the audit gate only if ALL of the following are true:
+
+. *Code quality*: All tests pass (`just test`)
+. *Linting*: All lint checks pass (`just lint`)
+. *Type checking*: All type checks pass (Idris2 compilation)
+. *Build*: Clean build with no warnings (`just build`)
+. *Documentation*: README, EXPLAINME, AFFIRMATION are current and accurate
+. *Safety*: No review state transitions can be bypassed
+. *Security*: No known vulnerabilities in dependencies
+. *Licencing*: All dependencies have reviewed licences
+. *Provenance*: All committed code has clear authorship
+
+== Audit History
+
+No releases have been audited or published yet. This section will contain
+dated entries for each release that passes the audit gate.
+
+=== Template for Future Entries
+
+----
+== Release vX.Y.Z - YYYY-MM-DD
+
+[AUDITED]
+====
+* Auditor: Name (handle)
+* Date: YYYY-MM-DD
+* Commit: git-commit-hash
+* Status: PASS / FAIL
+====
+
+[CRITERIA]
+|===
+| Criterion | Status | Evidence
+| Code quality | PASS/FAIL | just test output
+| Linting | PASS/FAIL | just lint output
+| Type checking | PASS/FAIL | Idris2 compilation log
+| Build | PASS/FAIL | just build output
+| Documentation | PASS/FAIL | Manual review
+| Safety | PASS/FAIL | canAdvance/canActivate verification
+| Security | PASS/FAIL | Dependency scan report
+| Licencing | PASS/FAIL | DEPENDENCIES.adoc review
+| Provenance | PASS/FAIL | git log review
+|===
+
+[NOTES]
+* Any special considerations or waivers
+* Known issues that are accepted for this release
+* Action items for follow-up
+
+[SIGNATURE]
+----
+ GPG Signature: [inline or attached]
+----
+
+---
+
+*Next release number:* v0.2.0 (when ready)
+
+== Current Pre-Release Checklist
+
+Before the first release (v0.2.0), the following must be completed:
+
+[cols="1,1,1"]
+|===
+| ID | Requirement | Status
+
+| AUDIT-001 | Implement persistent observation storage | NOT DONE
+| AUDIT-002 | Implement at least one source adapter | NOT DONE
+| AUDIT-003 | Complete licence review for all sources | NOT DONE
+| AUDIT-004 | Implement signing infrastructure | NOT DONE
+| AUDIT-005 | Implement professional review workflow | NOT DONE
+| AUDIT-006 | Implement consumer integration | NOT DONE
+| AUDIT-007 | Configure CI/CD pipeline | NOT DONE
+| AUDIT-008 | Complete security review | NOT DONE
+| AUDIT-009 | Remove all placeholder/hardcoded values | IN PROGRESS
+| AUDIT-010 | Verify RSR compliance | IN PROGRESS
+|===
+
+== Safety-Critical Checks
+
+Before any release, the following safety-critical aspects must be verified:
+
+=== Review State Machine
+
+* [ ] Verify that `canAdvance()` rejects all invalid transitions
+* [ ] Verify that the unit tests cover all valid transitions
+* [ ] Verify that the unit tests cover all invalid transitions
+* [ ] Verify that no code path bypasses `canAdvance()`
+
+=== Bundle Activation
+
+* [ ] Verify that `canActivate()` requires all 8 gates
+* [ ] Verify that unsigned bundles cannot activate
+* [ ] Verify that revoked bundles cannot activate
+* [ ] Verify that bundles with failed tests cannot activate
+* [ ] Verify that no code path bypasses `canActivate()`
+
+=== Data Integrity
+
+* [ ] Verify that `digest()` produces correct SHA-256 hashes
+* [ ] Verify that different inputs produce different digests
+* [ ] Verify that the same input always produces the same digest
+* [ ] Verify that empty files are handled correctly
+* [ ] Verify that large files are handled correctly
+
+== Release Process
+
+. Update AFFIRMATION.adoc with current state
+. Run `just check` and fix all issues
+. Update CHANGELOG.adoc with all changes since last release
+. Update ROADMAP.adoc with progress
+. Create a dated entry in this AUDIT.adoc file
+. Tag the release in git: `git tag -s -m "Release vX.Y.Z" vX.Y.Z`
+. Push the tag: `git push --tags`
+. Create a GitHub release with the tagged commit
+
+== Audit Tools
+
+The following tools are used for audit verification:
+
+* `just check` — Runs lint, typecheck, test
+* `just lint` — Runs zig fmt --check and prohibited stack check
+* `just test` — Runs Zig unit tests
+* Manual review of Idris2 compilation
+* Manual review of documentation accuracy
+
+== Licence
+
+This document: CC-BY-SA-4.0

@@ -1,0 +1,84 @@
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# META.a2ml — Project meta-level information for authority-watch
+# Architecture decisions, design rationale, governance.
+
+[metadata]
+version = "0.1.0"
+last-updated = "2026-08-11"
+
+[project-info]
+type = "library+binary"  # library | binary | monorepo | service | website
+languages = ["Zig", "Idris2", "AffineScript", "Bash"]
+license = "PMPL-2.0-or-later"
+author = "Jonathan D.A. Jewell (hyperpolymath)"
+homepage = "https://github.com/metadatastician/authority-watch"
+description = "High-assurance legal/regulatory change monitoring system with strictly-controlled review pipeline"
+
+[architecture-decisions]
+# ADR format: status = proposed | accepted | deprecated | superseded | rejected
+
+# ADR-001: Strict separation of concerns
+{ id = "ADR-001", title = "Separate observation from interpretation, approval, and publication", status = "accepted", date = "2026-01-00" }
+
+# ADR-002: Language selection
+{ id = "ADR-002", title = "Use Zig for CLI and core, Idris2 for invariants, AffineScript for contracts", status = "accepted", date = "2026-01-00" }
+
+# ADR-003: State machine design
+{ id = "ADR-003", title = "Enforce review state transitions at type level", status = "accepted", date = "2026-01-00" }
+
+# ADR-004: No automated activation
+{ id = "ADR-004", title = "Require explicit human review for production activation", status = "accepted", date = "2026-01-00" }
+
+[development-practices]
+build-tool = "zig-build + just"
+container-runtime = "none"  # podman | docker | none
+ci-platform = "github-actions"
+package-manager = "none"  # guix | cargo | mix | none
+
+[maintenance-axes]
+scoping-first = true
+execution-order = "axis-1 > axis-2 > axis-3"
+axis-1 = "must > intend > like"
+axis-2 = "corrective > adaptive > perfective"
+axis-3 = "systems > compliance > effects"
+
+[scoping]
+sources = "README.adoc, ROADMAP.adoc, STATE.a2ml, maintenance checklist"
+marker-scan = "TODO/FIXME/XXX/HACK/STUB/PARTIAL"
+idris-unsound-scan = "believe_me/assert_total"
+
+[axis-2-maintenance-rules]
+corrective-first = true
+adaptive-second = true
+adaptive-focus = "scope-change reconciliation, stale-reference removal, obsolete-work culling"
+perfective-third = true
+perfective-source = "axis-1 honest state after corrective/adaptive updates"
+
+[axis-3-audit-rules]
+audit-focus = "systems in place, documentation explains actual state, safety/security accounted for, observed effects reviewed"
+compliance-focus = "seams/compromises/exception register, bounded exceptions, anti-drift checks"
+drift-risk-example = "single exception broadening into policy violation (e.g., treating observed as approved)"
+effects-evidence = "test execution/results and maintainer status dialogue/review"
+
+[design-rationale]
+# Key design decisions and their reasoning
+
+# The strict state machine (ReviewState with canAdvance) ensures that no document
+# can skip required review steps. This is the primary safety mechanism.
+
+# The separation of Zig (execution), Idris2 (invariants), and AffineScript (contracts)
+# provides defence in depth: execution is memory-safe (Zig), invariants are 
+# mechanically checked (Idris2), and contracts are explicitly declared (AffineScript).
+
+# The canActivate function requires multiple gates to be satisfied simultaneously:
+# - review_state must be signed or published
+# - freshness must be current_verified or current_provisional
+# - has_signature and signature_trusted
+# - tests_passed
+# - compatibility_declared
+# - effective_dates_explicit
+# - rollback_safe
+# - not revoked
+# This ensures production activation is only possible when all safety conditions are met.

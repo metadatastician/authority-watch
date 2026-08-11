@@ -1,0 +1,56 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+# Authority Watch Maintainers
+
+This file lists the current maintainers of the Authority Watch project and
+their areas of responsibility.
+
+## Current Maintainers
+
+| Name | GitHub | Email | Role | Since |
+|---|---|---|---|---|
+| Jonathan D.A. Jewell | hyperpolymath | j.d.a.jewell@open.ac.uk | Owner, Safety Officer, Lead Maintainer | 2026-01-00 |
+
+## Role Definitions
+
+### Owner
+- Ultimate decision authority for the project
+- Responsible for project vision and direction
+- Has final say on all disputes
+- Can delegate authority to other maintainers
+
+### Safety Officer
+- Responsible for safety-critical decisions
+- Has veto authority over any change that affects safety
+- Must approve all changes to canAdvance(), canActivate(), review states
+- Can halt any operation that violates safety principles
+
+### Lead Maintainer
+- Day-to-day management of the project
+- Reviews and merges pull requests
+- Maintains release schedule
+- Coordinates with contributors
+
+## Contact
+
+For security issues, please contact the safety officer privately.
+For general issues, please use GitHub Issues.
+For design discussions, please use GitHub Discussions.
+
+## Becoming a Maintainer
+
+To become a maintainer:
+
+1. Contribute significantly to the project (code, documentation, review)
+2. Demonstrate understanding of the safety principles
+3. Be nominated by an existing maintainer
+4. Be approved by the owner
+5. Sign the maintainer agreement (if applicable)
+
+## Former Maintainers
+
+None at this time.
+
+## Licence
+
+This file: CC-BY-SA-4.0

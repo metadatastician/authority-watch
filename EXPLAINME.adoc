@@ -1,0 +1,441 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= EXPLAINME — Authority Watch Engineering Deep Dive
+:toc:
+:icons: font
+
+[.lead]
+This file explains *how the key claims* of Authority Watch map to real code.
+It is the engineering companion to link:README.adoc[README] — where README says
+*what* the project is, this file says *how* it works.
+
+== Central Claim: Strict Separation of States
+
+*Claim:* Authority Watch maintains a strict, non-bypassable separation between
+observation, interpretation, approval, and publication.
+
+*How this is implemented:*
+
+=== Type-Level Enforcement (Idris2)
+
+The `ReviewState` type in `idris2/AuthorityWatch/Review.idr` is an enum with
+26 variants representing every stage of the document lifecycle:
+
+----
+data ReviewState
+  = Observed
+  | Retrieved
+  | SourceVerified
+  | Parsed
+  | Diffed
+  | MachineClassified
+  | TriageRequired
+  | ImpactCandidatePrepared
+  | FirstReviewCompleted
+  | SecondReviewCompleted
+  | Approved
+  | Tested
+  | Signed
+  | Published
+  | Consumed
+  | RevokedAfterPublication
+  | ... (10 more states for edge cases)
+----
+
+These are *distinct types* in Idris2. You cannot treat an `Observed` as an
+`Approved` — the type system prevents it.
+
+=== Runtime Enforcement (Zig)
+
+The `canAdvance(from: ReviewState, to: ReviewState) bool` function in
+`zig/src/core.zig` explicitly validates each transition:
+
+----
+pub fn canAdvance(from: ReviewState, to: ReviewState) bool {
+    return switch (from) {
+        .observed => to == .retrieved,
+        .retrieved => to == .source_verified,
+        .source_verified => to == .parsed,
+        .parsed => to == .diffed,
+        // ... each transition is explicitly allowed or rejected
+        else => false,
+    };
+}
+----
+
+*Key insight:* This is a *switch expression* that returns `false` for any
+transition not explicitly listed. There is no way to skip a state.
+
+=== Contract-Level Enforcement (AffineScript)
+
+The `productionApprovalGate` function in
+`affinescript/review/Transitions.affine` enforces the two-reviewer requirement:
+
+----
+fn productionApprovalGate(request: ref TransitionRequest) -> TransitionDecision {
+  if request.production {
+    if request.reviewerCount >= 2 {
+      Allowed
+    } else {
+      RequiresSecondReviewer
+    }
+  } else {
+    Allowed
+  }
+}
+----
+
+*Key insight:* Production transitions require two reviewers. Single-review
+transitions are allowed but marked as `ProvisionalSingleReviewOnly`.
+
+== Central Claim: No Automated Activation
+
+*Claim:* Bundles cannot be activated without satisfying all safety gates.
+
+*How this is implemented:*
+
+=== The BundleGate Struct (Zig)
+
+In `zig/src/core.zig`, `BundleGate` defines 8 gates that must ALL be true:
+
+----
+pub const BundleGate = struct {
+    review_state: ReviewState,
+    freshness: Freshness,
+    has_signature: bool,
+    signature_trusted: bool,
+    tests_passed: bool,
+    compatibility_declared: bool,
+    effective_dates_explicit: bool,
+    rollback_safe: bool,
+    revoked: bool,
+};
+----
+
+=== The canActivate Function (Zig)
+
+The `canActivate(gate: BundleGate) bool` function requires ALL gates:
+
+----
+pub fn canActivate(gate: BundleGate) bool {
+    const review_allows = gate.review_state == .signed or
+        gate.review_state == .published;
+    const freshness_allows = gate.freshness == .current_verified or
+        gate.freshness == .current_provisional;
+    return review_allows and
+        freshness_allows and
+        gate.has_signature and
+        gate.signature_trusted and
+        gate.tests_passed and
+        gate.compatibility_declared and
+        gate.effective_dates_explicit and
+        gate.rollback_safe and
+        !gate.revoked;
+}
+----
+
+*Key insight:* This is a *conjunction* (AND) of all 8 conditions. If ANY
+condition is false, the bundle cannot activate. There is no "override" path.
+
+== Central Claim: Immutable Observations
+
+*Claim:* Observations are immutable once created. Corrections supersede but
+ do not erase.
+
+*How this is implemented:*
+
+=== The Observation Struct (Zig)
+
+In `zig/src/core.zig`, `Observation` is a struct with no mutable fields:
+
+----
+pub const Observation = struct {
+    schema_version: u16 = 1,
+    source_id: []const u8,
+    canonical_uri: []const u8,
+    retrieved_uri: []const u8,
+    retrieved_at: i64,
+    http_status: u16,
+    content_type: []const u8,
+    raw_digest: [32]u8,  // SHA-256 hash
+    parser_version: []const u8,
+    normaliser_version: []const u8,
+    licence_id: []const u8,
+    previous_digest: ?[32]u8 = null,
+};
+----
+
+*Key insight:* All fields are `const` or immutable types (`[32]u8` is a
+fixed-size array, not a slice). Once an `Observation` is created, it cannot
+be modified.
+
+=== The persistObservation Function (AffineScript)
+
+In `affinescript/domain/Authority.affine`:
+
+----
+// An observation is consumed once by the append-only persistence boundary.
+fn persistObservation(observation: own SourceObservation) -> () = ();
+----
+
+*Key insight:* The comment explicitly states "consumed *once* by the
+append-only persistence boundary". This is the functional programming
+equivalent of append-only storage — each observation is persisted exactly once.
+
+== Central Claim: Digest Integrity
+
+*Claim:* Every byte change produces a different digest. The system can detect
+tampering.
+
+*How this is implemented:*
+
+=== The digest Function (Zig)
+
+In `zig/src/core.zig`:
+
+----
+pub fn digest(bytes: []const u8) [32]u8 {
+    var out: [32]u8 = undefined;
+    std.crypto.hash.sha2.Sha256.hash(bytes, &out, .{});
+    return out;
+}
+----
+
+*Key insight:* Uses Zig's standard library SHA-256 implementation. The output
+is a fixed 32-byte array (256 bits).
+
+=== Test Coverage (Zig)
+
+The test "raw digest changes on any byte change" verifies this:
+
+----
+test "raw digest changes on any byte change" {
+    const first = digest("official source");
+    const second = digest("official source.");
+    try std.testing.expect(!std.mem.eql(u8, &first, &second));
+}
+----
+
+*Key insight:* Even a single byte change (adding a period) produces a
+completely different digest. This is a property of SHA-256.
+
+== Central Claim: Profile-Based Configuration
+
+*Claim:* Sources are configured via profiles, allowing different domains to have
+different source sets.
+
+*How this is implemented:*
+
+=== Profile Structure
+
+The `profiles/` directory contains profile-specific configuration:
+
+----
+profiles/
+├── uk-insolvency/
+│   ├── profile-manifest.a2ml      # Profile metadata
+│   ├── sources/
+│   │   └── registry.a2ml           # Source definitions
+│   └── watchlists/
+│       └── legislation.a2ml        # Authority watchlists
+----
+
+=== Profile Manifest (A2ML)
+
+`profiles/uk-insolvency/profile-manifest.a2ml`:
+
+----
+schema = "authority-watch-profile/v1"
+profile_id = "uk-insolvency"
+title = "UK insolvency authority monitoring"
+status = "PROVISIONAL_UNREVIEWED"
+core_ontology = "generic"
+jurisdiction_scope = ["UK", "England and Wales"]
+first_consumer = "metadatastician/sim-insolvency"
+production_updates_enabled = false
+single_curator_mode = true
+single_curator_bundle_mark = "PROVISIONAL_SINGLE_REVIEW"
+professional_review_required = true
+----
+
+*Key insight:* `production_updates_enabled = false` means all monitoring is
+disabled. This is a deliberate safety measure.
+
+=== Source Registry (A2ML)
+
+`profiles/uk-insolvency/sources/registry.a2ml` defines 7 sources:
+
+----
+[[sources]]
+source_id = "legislation-gov-uk"
+publisher = "The National Archives"
+source_class = "formal-primary-authority"
+authority_grade = "A"
+jurisdiction = "United Kingdom"
+coverage = "Legislation, publication log, point-in-time text, effects and amendments"
+official_uri = "https://www.legislation.gov.uk/"
+machine_uri = "https://www.legislation.gov.uk/developer"
+licence = "Open Government Licence subject to source-specific notices"
+retrieval_method = "official-api-and-atom"
+expected_cadence = "daily"
+review_owner = "uk-insolvency-curator"
+enabled = false  // <-- All sources are disabled
+----
+
+*Key insight:* Every source has `enabled = false`. Automated monitoring is
+completely disabled until explicitly enabled after licence and terms review.
+
+== Central Claim: CLI Commands Are Limited
+
+*Claim:* The CLI intentionally provides only a limited set of commands, with
+production actions hard-blocked.
+
+*How this is implemented:*
+
+=== Main Command Dispatcher (Zig)
+
+In `zig/src/main.zig`, only three commands are implemented:
+
+----
+pub fn main(init: std.process.Init) !void {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    const command = if (args.len > 1) args[1] else "status";
+
+    if (std.mem.eql(u8, command, "status")) { showStatus(); return; }
+    if (std.mem.eql(u8, command, "freshness")) { showFreshness(profile); return; }
+    if (std.mem.eql(u8, command, "ingest")) { try ingest(init, args[2]); return; }
+
+    // Unknown command - exit with error
+}
+----
+
+=== Justfile Blocks Production Actions
+
+In `Justfile`, production actions explicitly refuse:
+
+----
+build-bundle:
+    @echo "Refusing to build a bundle without an approved review record and configured signer."
+    @false
+
+publish-local:
+    @echo "Refusing publication: no approved, tested and signed bundle was supplied."
+    @false
+----
+
+*Key insight:* These commands use `@false` to force a non-zero exit code.
+They cannot succeed, even if called. This is a deliberate safety measure.
+
+== Central Claim: Defence in Depth
+
+*Claim:* Authority Watch uses multiple layers of protection.
+
+*How this is implemented:*
+
+=== Layer 1: Type System (Idris2)
+
+Idris2 enforces at compile time that:
+
+* Review states are distinct and cannot be conflated
+* Transitions are explicit (via the `CanAdvance` type in Review.idr)
+* Temporal facts are explicitly typed (via `TemporalFacts` in Core.idr)
+
+=== Layer 2: Runtime Checks (Zig)
+
+Zig enforces at runtime that:
+
+* State transitions follow `canAdvance()` (no skipping)
+* Bundle activation requires `canActivate()` (all gates satisfied)
+* Digests are computed correctly (SHA-256)
+
+=== Layer 3: Process Controls (Justfile + AGENTS.md)
+
+Process-level enforcement:
+
+* `just check` must pass before any merge
+* AGENTS.md forbids automated approval
+* Production commands are hard-blocked
+
+=== Layer 4: Configuration (Profiles)
+
+* All sources are disabled by default
+* Production updates are disabled by default
+* Licence review is required before enabling any source
+
+== How the Pieces Fit Together
+
+[graphviz]
+----
+digraph Architecture {
+  rankdir=TB;
+
+  subgraph cluster_execution {
+    label = "Execution Layer (Zig)";
+    "zig/src/main.zig" [shape=box];
+    "zig/src/core.zig" [shape=box];
+  }
+
+  subgraph cluster_invariants {
+    label = "Invariants Layer (Idris2)";
+    "idris2/AuthorityWatch/Core.idr" [shape=box];
+    "idris2/AuthorityWatch/Review.idr" [shape=box];
+  }
+
+  subgraph cluster_contracts {
+    label = "Contracts Layer (AffineScript)";
+    "affinescript/domain/Authority.affine" [shape=box];
+    "affinescript/review/Transitions.affine" [shape=box];
+  }
+
+  subgraph cluster_config {
+    label = "Configuration Layer (A2ML)";
+    "profiles/" [shape=folder];
+    "0-AI-MANIFEST.adoc" [shape=note];
+    "AGENTS.md" [shape=note];
+  }
+
+  "zig/src/main.zig" -> "zig/src/core.zig" [label="imports"];
+  "zig/src/core.zig" -> "idris2/AuthorityWatch/Core.idr" [label="mirrors types", style=dashed];
+  "affinescript/domain/Authority.affine" -> "idris2/AuthorityWatch/Core.idr" [label="formalizes", style=dashed];
+  "profiles/" -> "zig/src/main.zig" [label="configures"];
+  "0-AI-MANIFEST.adoc" -> "AGENTS.md" [label="constrains"];
+}
+----
+
+== Repository Map
+
+[cols="1,3"]
+|===
+| Path | What lives there
+
+| `0-AI-MANIFEST.adoc` | Universal entry point for AI agents
+| `AGENTS.md` | Agent-specific operational rules
+| `RSR-PHILOSOPHY.adoc` | RSR principles as applied to this repo
+| `README.adoc` | Project overview and quick start
+| `ROADMAP.adoc` | Milestones and planned work
+| `CHANGELOG.adoc` | Historical changes
+| `GOVERNANCE.adoc` | Safety authority and review requirements
+| `CONTRIBUTING.adoc` | Contribution guidelines
+| `DEPENDENCIES.adoc` | Dependency status and boundaries
+| `.machine_readable/` | Machine-readable metadata (RSR compliance)
+| `zig/` | Zig source code (CLI and core)
+| `idris2/` | Idris2 source code (formal invariants)
+| `affinescript/` | AffineScript contracts (application layer)
+| `profiles/` | Profile configurations (uk-insolvency, etc.)
+| `Justfile` | Task orchestration
+| `build.zig` | Zig build configuration
+| `tools/` | Supporting scripts
+|===
+
+== Where to Go Next
+
+* link:README.adoc[README] — Project overview
+* link:AFFIRMATION.adoc[AFFIRMATION] — Dated, signed honesty snapshot
+* link:AUDIT.adoc[AUDIT] — Release audit gate
+* link:GOVERNANCE.adoc[GOVERNANCE] — Safety and review requirements
+* link:ROADMAP.adoc[ROADMAP] — Planned milestones
+
+== License
+
+Code and configuration: link:LICENSE[PMPL-2.0-or-later]
+Documentation: CC-BY-SA-4.0

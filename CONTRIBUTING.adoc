@@ -1,12 +1,229 @@
-// SPDX-License-Identifier: PMPL-2.0-or-later
-= Contributing
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= Contributing — Authority Watch
+:toc:
+:icons: font
 
-Start with `just doctor`, then run `just check`.
+[.lead]
+Thank you for your interest in contributing to Authority Watch! This document
+guides you through the contribution process and sets expectations for
+what we accept.
 
-Contributions that add a source adapter must document the official source,
-licence or terms review date, retrieval method, identifying user agent,
-conditional-request behaviour, rate limits, expected cadence, failure modes,
-and fixture provenance.
+== Quick Start
 
-Never commit a production observation. Fixtures must be small, licensed,
-attributed, and clearly non-authoritative.
+Before contributing, ensure you can build and test the project:
+
+[source,console]
+----
+# 1. Check prerequisites
+just doctor
+
+# 2. Build the project
+just build
+
+# 3. Run all checks (lint, typecheck, test)
+just check
+
+# 4. Review the codebase
+# Read README.adoc for project overview
+# Read EXPLAINME.adoc for engineering details
+# Read AGENTS.md for agent rules (if you're an AI agent)
+# Read RSR-PHILOSOPHY.adoc for operating principles
+----
+
+If any of these steps fail, please open an issue with the details.
+
+== How to Contribute
+
+=== Reporting Bugs
+
+When reporting bugs, please include:
+
+* A clear description of the issue
+* Steps to reproduce (including commands and inputs)
+* Expected vs. actual behavior
+* Your environment (Zig version, OS, etc.)
+* Relevant log output
+
+Use GitHub Issues for bug reports.
+
+=== Suggesting Features
+
+Feature requests should include:
+
+* A clear description of the feature
+* The problem it solves
+* How it aligns with the project's safety principles
+* Any relevant context or examples
+
+Use GitHub Discussions for feature requests.
+
+=== Contributing Code
+
+. Fork the repository
+. Create a feature branch (`git checkout -b feature/your-feature`)
+. Make your changes
+. Run `just check` to ensure all checks pass
+. Update CHANGELOG.adoc with your changes
+. Commit your changes with a clear, descriptive message
+. Push to your fork
+. Open a Pull Request
+
+==== Pull Request Requirements
+
+All PRs must:
+
+* Pass `just check` (lint, typecheck, test)
+* Include a clear description of the change
+* Reference any related issues or discussions
+* Update documentation as needed
+* Follow the existing code style
+* Not modify safety-critical paths without approval
+
+==== Code Style
+
+* Follow the existing formatting in the file you're modifying
+* Use Zig's standard formatting (`zig fmt`)
+* Use descriptive variable and function names
+* Include SPDX-License-Identifier in all new files
+* Include copyright notice in all new files
+* Write tests for new functionality
+
+== Specific Contribution Guidelines
+
+=== Source Adapters
+
+Contributions that add a source adapter *must* document:
+
+* The official source name and publisher
+* The official URI and machine URI (API endpoint)
+* The licence or terms of use
+* The licence review date
+* The retrieval method (API, feed, scraping, etc.)
+* The identifying user agent string
+* Conditional request behavior (headers, rate limiting)
+* Rate limits and backoff strategy
+* Expected update cadence
+* Failure modes and handling
+* Fixture provenance (for test data)
+
+=== Profile Additions
+
+Contributions that add a new profile *must* include:
+
+* Profile manifest (`profile-manifest.a2ml`)
+* Source registry (`sources/registry.a2ml`)
+* Initial watchlist (`watchlists/*.a2ml`)
+* Documentation of the domain and jurisdiction
+* Licence review for all sources in the profile
+
+=== Core Changes
+
+Changes to core types or safety invariants require:
+
+* Detailed explanation of the change
+* Justification for why it's needed
+* Analysis of the impact on existing code
+* Updated tests covering the change
+* Review by at least two maintainers
+* Approval from the safety officer (for safety-critical changes)
+
+== What We Do NOT Accept
+
+* Production observations, reviews, or signing keys in the repository
+* Private review material or credentials
+* Automated approval or activation bypasses
+* Code that violates the separation of concerns (observation vs. interpretation)
+* Unlicensed or improperly attributed test fixtures
+* Changes that reduce safety or remove safeguards
+
+== Development Workflow
+
+=== Local Development
+
+[source,console]
+----
+# Build and test
+just build
+just test
+
+# Run the CLI
+./zig-out/bin/authority-watch status
+./zig-out/bin/authority-watch ingest path/to/file
+
+# Format code
+zig fmt zig/src/main.zig
+zig fmt zig/src/core.zig
+
+# Clean build artifacts
+just clean
+----
+
+=== Testing
+
+All code must have test coverage. Use Zig's built-in testing:
+
+----
+// In zig/src/core.zig
+
+test "test name" {
+    // Test code here
+    try std.testing.expect(some_condition);
+}
+----
+
+Run tests with `just test` or `zig build test`.
+
+=== Linting
+
+All code must pass linting checks:
+
+[source,console]
+----
+just lint
+----
+
+This runs `zig fmt --check` and the prohibited stack check.
+
+=== Documentation
+
+All significant changes must be documented:
+
+* Update README.adoc if the change affects users
+* Update EXPLAINME.adoc if the change affects the architecture
+* Update CHANGELOG.adoc for all changes
+* Update AFFIRMATION.adoc if the change affects the project state
+
+== Review Process
+
+All PRs are reviewed by maintainers. The review process typically:
+
+. Checks that the PR passes all automated checks
+. Verifies the change aligns with project principles
+. Ensures documentation is updated
+. Confirms tests are adequate
+. For safety-critical changes: requires safety officer approval
+
+== Recognition
+
+All contributors will be recognized in:
+
+* The CHANGELOG.adoc for their contributions
+* The CONTRIBUTORS file (if created)
+* The release notes for any release that includes their work
+
+== Support
+
+For questions or support:
+
+* GitHub Discussions for design questions
+* GitHub Issues for bug reports
+* Read the documentation (README, EXPLAINME, etc.)
+
+== Licence
+
+By contributing to this project, you agree to licence your contributions
+under the project's licence (PMPL-2.0-or-later for code, CC-BY-SA-4.0 for
+documentation).
+
+This document: CC-BY-SA-4.0

@@ -1,24 +1,181 @@
-// SPDX-License-Identifier: PMPL-2.0-or-later
-= Governance
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= Governance — Authority Watch
+:toc:
+:icons: font
 
-== Safety authority
+[.lead]
+This document defines the governance structure, roles, responsibilities, and
+decision-making processes for the Authority Watch project.
 
-The source publisher controls what was published. Authority Watch records that
-publication. A qualified human reviewer determines an interpretation. A
-separate approval event authorises a rule-pack change. Signing attests to the
-approved bundle; it does not create legal truth.
+== Safety Authority and Trust Model
 
-== Review
+=== Core Principle
 
-Production legal-rule changes require two identified reviewers. During private
-solo experimentation, one curator may produce only a bundle marked
-`PROVISIONAL_SINGLE_REVIEW`. Such a bundle cannot support an accredited or
-professionally validated assessment claim.
+*The source publisher controls what was published. Authority Watch only records
+that publication.*
 
-Reviews and corrections are append-only events. A correction supersedes but
-does not erase its predecessor.
+This is the foundational trust boundary: Authority Watch does not create,
+modify, or interpret authoritative content. It only observes, records, and
+tracks the state of official publications.
 
-== Publication
+=== Trust Chain
 
-Unsigned, revoked, stale, rollback-unsafe, or unapproved bundles must not
-activate. Operators remain responsible for professional and legal review.
+. *Publisher*: The official source (e.g., legislation.gov.uk) publishes content
+. *Observer*: Authority Watch records the publication (observation)
+. *Reviewer*: A qualified human interprets what the publication means (interpretation)
+. *Approver*: A separate human authorizes the interpretation (approval)
+. *Signer*: A trusted human signs the approved bundle (signing)
+. *Publisher*: Authority Watch publishes the signed bundle (publication)
+. *Consumer*: Downstream systems consume the published bundle (consumption)
+
+*Critical:* Signing attests to the approved bundle — it does *not* create
+legal truth. The legal truth is established by the source publisher.
+
+== Review Requirements
+
+=== Production Legal-Rule Changes
+
+Production legal-rule changes *require* two identified, independent reviewers.
+
+*Each reviewer must:*
+
+. Have documented qualifications for the jurisdiction
+. Review the source document and its provenance
+. Review the interpretation and its reasoning
+. Review the effective date determination
+. Document uncertainties and assumptions
+. Sign the review record with their identifier
+
+=== Provisional Mode
+
+During private solo experimentation, one curator may produce bundles marked
+`PROVISIONAL_SINGLE_REVIEW`.
+
+*Constraints on provisional bundles:*
+
+. Cannot support an accredited assessment claim
+. Cannot support a professionally validated assessment claim
+. Must be clearly marked as PROVISIONAL in all outputs
+. Cannot be used for production decisions
+. Must still pass all automated checks (tests, linting)
+
+=== Review Process
+
+. *Observation*: Document is ingested and hashed
+. *Retrieval*: Document is fetched from official source
+. *Source Verification*: Document provenance is verified
+. *Parsing*: Document is parsed into structured format
+. *Diffing*: Changes from previous version are computed
+. *Machine Classification*: Automated classification of change type
+. *Triage*: Human determines if change requires review
+. *Impact Candidate Preparation*: Human prepares impact assessment
+. *First Review*: First reviewer completes review
+. *Second Review*: Second reviewer completes review (required for production)
+. *Approval*: Change is approved for testing
+. *Testing*: Automated and manual tests pass
+. *Signing*: Bundle is signed with trusted key
+
+== Publication Rules
+
+A bundle *must not* activate if ANY of the following are true:
+
+* It is unsigned
+* It has an untrusted signature
+* Tests have not passed
+* Compatibility has not been declared
+* Effective dates are not explicit
+* It is not rollback-safe
+* It has been revoked
+* Review state is not `.signed` or `.published`
+* Freshness is not `.current_verified` or `.current_provisional`
+
+Operators remain responsible for professional and legal review of all
+published bundles.
+
+== Amendments and Corrections
+
+Reviews and corrections are *append-only* events:
+
+* A correction supersedes but does *not* erase its predecessor
+* All previous versions remain in the ledger for auditability
+* Each correction receives a new, unique identifier
+* The superseded version is marked as superseded, not deleted
+
+This ensures a complete audit trail of all changes and corrections.
+
+== Role Definitions
+
+[cols="1,2,3"]
+|===
+| Role | Responsibilities | Qualifications
+
+| *Source Publisher* | Publishes official content | External (e.g., The National Archives)
+| *Curator* | Configures and maintains profiles | Familiar with source APIs and terms
+| *Reviewer* | Interprets documents and prepares reviews | Legal qualification for jurisdiction
+| *Approver* | Authorizes interpretations | Senior legal qualification
+| *Signer* | Signs approved bundles | Trusted key holder
+| *Operator* | Manages system operations | Technical and security expertise
+| *Maintainer* | Maintains codebase | Development and architectural expertise
+| *Safety Officer* | Oversees safety-critical operations | Authority to halt operations
+|===
+
+== Decision-Making Process
+
+=== Routine Decisions
+
+Routine decisions (bug fixes, documentation updates, test additions) may be
+made by maintainers with the following requirements:
+
+. Code passes `just check` (lint, typecheck, test)
+. Changes are reviewed by at least one other maintainer
+. Changes do not modify safety-critical code paths
+
+=== Safety-Critical Decisions
+
+Safety-critical decisions (changes to `canAdvance`, `canActivate`, review
+state definitions, activation gates) require:
+
+. Two independent reviews by maintainers
+. Explicit approval from the safety officer
+. Updated documentation reflecting the change
+. Updated tests covering the new behavior
+. Entry in CHANGELOG.adoc describing the change
+
+=== Architectural Decisions
+
+Architectural decisions (new languages, major component additions, protocol
+changes) require:
+
+. Proposal in a GitHub Discussion or Issue
+. Review period of at least 7 days
+. Consensus among maintainers
+. Documentation in ADR format (in META.a2ml)
+
+== Conflict Resolution
+
+Conflicts are resolved through:
+
+. *Technical disagreements*: Majority vote among maintainers
+. *Safety disagreements*: Safety officer has veto authority
+. *Legal disagreements*: Escalation to legal reviewer
+. *Process disagreements*: Escalation to project owner
+
+== Code of Conduct
+
+All contributors must follow the RSR Doctrine as stated in RSR-PHILOSOPHY.adoc:
+
+* Holes before goals
+* Always fail loudly
+* Solutions at source
+
+Additionally:
+
+* Be respectful and professional in all communications
+* Assume good intent
+* Focus on the problem, not the person
+* Document decisions, not just actions
+
+== Licence
+
+This document: CC-BY-SA-4.0

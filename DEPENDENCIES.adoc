@@ -1,49 +1,168 @@
-// SPDX-License-Identifier: PMPL-2.0-or-later
-= Dependencies
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= Dependencies — Authority Watch
+:toc:
+:icons: font
 
-[cols="1,1,3",options="header"]
+[.lead]
+This document records all dependencies of Authority Watch, their current
+status, licence terms, and integration boundaries. It is the canonical
+source for dependency information.
+
+== Dependency Summary
+
+Authority Watch has three classes of dependencies:
+
+* *Runtime*: Required to build and run the application
+* *Development*: Required for development and testing
+* *Inspected*: Reviewed but not currently integrated
+* *Blocked*: Explicitly blocked pending resolution
+
+== Runtime Dependencies
+
+[cols="1,1,1,2,2"]
 |===
-|Dependency |Status |Boundary
+| Dependency | Version | Status | Licence | Boundary
 
-|AffineScript
-|Experimental
-|Principal application contracts only; do not assume unimplemented compiler
-or standard-library capabilities.
+| Zig | 0.16.x | Available | MIT or Apache-2.0 | Executable core, acquisition, hashing, storage, signatures, protocol boundaries. No C intermediary.
 
-|Zig 0.16
-|Available
-|Executable core, acquisition, hashing, storage, signatures, protocol and FFI
-boundaries. No C intermediary.
+| Idris2 | 0.7.x | Available | BSD-3-Clause | Identity, transition, temporal and activation invariants. Formal type definitions.
 
-|Idris2 0.7
-|Available
-|Identity, transition, temporal and activation invariants.
-
-|typed-wasm
-|Inspected
-|Intended verified carrier; integration remains capability-gated.
-
-|Gossamer
-|Inspected
-|AffineScript bindings and pure-Zig shell exist; operator console integration
-is staged after the manual core.
-
-|SNIFS
-|Inspected
-|No dependency selected. Its BEAM/Wasm safety design is not presently needed
-for the canonical observation ledger.
-
-|No-Nonsense NNTPS
-|Inspected
-|Reader/profile integration only; Authority Watch will not turn it into a
-server.
-
-|proven-tests-and-benches
-|Inspected
-|Idris2 test taxonomy is reusable; direct package integration is deferred
-until the initial core ABI stabilises.
-
-|unified-hexadeca-api
-|Blocked
-|No canonical repository was located. No API is invented in its absence.
+| Bash | Any | Available | GPL-3.0 (typical) | Task orchestration via Justfile. POSIX-compliant shell scripts.
 |===
+
+== Development Dependencies
+
+[cols="1,1,1,2,2"]
+|===
+| Dependency | Version | Status | Licence | Purpose
+
+| just | 1.x | Available | MIT or Apache-2.0 | Task runner for build orchestration
+|===
+
+== Inspected Dependencies
+
+These dependencies have been reviewed but are not currently integrated into
+the build. They may be integrated in future milestones.
+
+[cols="1,1,1,2,2"]
+|===
+| Dependency | Version | Status | Licence | Boundary
+
+| AffineScript | N/A | Experimental | MPL-2.0 (estate) | Principal application contracts only; do not assume unimplemented compiler or standard-library capabilities. Contracts exist as documentation.
+
+| typed-wasm | N/A | Inspected | MIT | Intended verified carrier; integration remains capability-gated pending ABI stabilization.
+
+| Gossamer | N/A | Inspected | MPL-2.0 (estate) | AffineScript bindings and pure-Zig shell exist; operator console integration is staged after the manual core.
+
+| SNIFS | N/A | Inspected | MPL-2.0 (estate) | No dependency selected. Its BEAM/Wasm safety design is not presently needed for the canonical observation ledger.
+
+| No-Nonsense NNTPS | N/A | Inspected | GPL-3.0 | Reader/profile integration only; Authority Watch will not turn it into a server.
+
+| proven-tests-and-benches | N/A | Inspected | MPL-2.0 (estate) | Idris2 test taxonomy is reusable; direct package integration is deferred until the initial core ABI stabilises.
+
+| unified-hexadeca-api | N/A | Blocked | N/A | No canonical repository was located. No API is invented in its absence.
+|===
+
+== Blocked Dependencies
+
+These dependencies are explicitly blocked and must not be integrated without
+resolving the blocker.
+
+[cols="1,2,2"]
+|===
+| Dependency | Blocker | Resolution Required
+
+| unified-hexadeca-api | No canonical repository | Locate canonical repository or remove dependency
+|===
+
+== Licence Compliance Status
+
+=== Runtime Dependencies
+
+[cols="1,1,1,2"]
+|===
+| Dependency | Licence | Compatible | Review Date
+
+| Zig | MIT or Apache-2.0 | Yes | Permissive, compatible with PMPL-2.0
+| Idris2 | BSD-3-Clause | Yes | Permissive, compatible with PMPL-2.0
+| Bash | GPL-3.0 | Yes | Used only in scripts, not linked into binaries
+|===
+
+=== Development Dependencies
+
+[cols="1,1,1,2"]
+|===
+| Dependency | Licence | Compatible | Review Date
+
+| just | MIT or Apache-2.0 | Yes | Permissive, compatible with PMPL-2.0
+|===
+
+=== Inspected Dependencies
+
+[cols="1,1,1,2"]
+|===
+| Dependency | Licence | Compatible | Review Date
+
+| AffineScript | MPL-2.0 | Yes | Estate licence, compatible
+| typed-wasm | MIT | Yes | Permissive, compatible
+| Gossamer | MPL-2.0 | Yes | Estate licence, compatible
+| SNIFS | MPL-2.0 | Yes | Estate licence, compatible
+| No-Nonsense NNTPS | GPL-3.0 | Conditional | GPL-3.0 is copyleft; must not be linked into proprietary software
+| proven-tests-and-benches | MPL-2.0 | Yes | Estate licence, compatible
+|===
+
+== Dependency Review Process
+
+Before integrating any new dependency:
+
+. *Identify the licence*: Determine the exact licence of the dependency
+. *Check compatibility*: Verify it is compatible with PMPL-2.0-or-later
+. *Review terms*: Check for any special terms or restrictions
+. *Document*: Add to this file with all relevant information
+. *Approve*: Obtain approval from maintainers
+
+=== Licence Compatibility Matrix
+
+[cols="1,1,1"]
+|===
+| Our Licence | Their Licence | Compatible?
+
+| PMPL-2.0-or-later | MIT | Yes
+| PMPL-2.0-or-later | Apache-2.0 | Yes
+| PMPL-2.0-or-later | BSD-2-Clause | Yes
+| PMPL-2.0-or-later | BSD-3-Clause | Yes
+| PMPL-2.0-or-later | MPL-2.0 | Yes
+| PMPL-2.0-or-later | ISC | Yes
+| PMPL-2.0-or-later | GPL-3.0 | No (for proprietary use)
+| PMPL-2.0-or-later | AGPL-3.0 | No
+|===
+
+== Dependency Management
+
+=== Version Pinning
+
+* Zig: Version is determined by the build system (zig build)
+* Idris2: Version is determined by the idris2 command
+* just: Version is not pinned (system dependency)
+
+=== Updating Dependencies
+
+To update a dependency:
+
+. Identify the new version
+. Verify licence compatibility (if licence changed)
+. Test the update locally
+. Update this document with the new version
+. Submit a PR with the change
+
+== Security Considerations
+
+* All dependencies are reviewed for known vulnerabilities
+* No dependency has known critical vulnerabilities at this time
+* Security updates are prioritized over feature updates
+* Dependencies with security issues are blocked or updated immediately
+
+== Licence
+
+This document: CC-BY-SA-4.0

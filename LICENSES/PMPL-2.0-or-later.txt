@@ -1,0 +1,10 @@
+SPDX-License-Identifier: PMPL-2.0-or-later
+
+This repository uses the PMPL-2.0-or-later licence (Palimpsest-MPL License Version 2.0).
+
+The full text of the licence is available in the LICENSE file at the root of
+the repository.
+
+See: https://github.com/hyperpolymath/standards/blob/main/licenses/PMPL-2.0-or-later.txt
+
+This file is a convenience copy for licence scanning tools.

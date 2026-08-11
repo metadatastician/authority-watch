@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# STATE.a2ml — Project state checkpoint for authority-watch
+#
+# This file records the current state, maturity, and roadmap of the authority-watch
+# project. It is the canonical source of truth for project status.
+
+[metadata]
+project = "authority-watch"
+version = "0.1.0"
+last-updated = "2026-08-11"
+status = "active"  # active | paused | archived
+
+[project-context]
+name = "authority-watch"
+purpose = "High-assurance legal/regulatory change monitoring system with a strictly-controlled pipeline for tracking authoritative documents. Enforces a non-bypassable progression of review states (observed -> retrieved -> source_verified -> parsed -> diffed -> machine_classified -> triage_required -> impact_candidate_prepared -> first_review_completed -> second_review_completed -> approved -> tested -> signed -> published -> consumed) before any document can be treated as authoritative."
+completion-percentage = 30
+
+[position]
+phase = "implementation"      # design | implementation | testing | maintenance | archived
+maturity = "alpha"    # experimental | alpha | beta | production | lts
+
+[route-to-mvp]
+milestones = [
+  { name = "Milestone 1: manual precision core", completion = 70 },
+  { name = "Milestone 2: official APIs (legislation.gov.uk, GOV.UK)", completion = 0 },
+  { name = "Milestone 3: professional material (SIP, JIEB)", completion = 0 },
+  { name = "Milestone 4: consumer integration (signed manifests, staging)", completion = 0 },
+  { name = "Milestone 5: NNTPS review mirror", completion = 0 },
+  { name = "Milestone 6: hosted service", completion = 0 },
+]
+
+[blockers-and-issues]
+# Core ontology and safety boundary are established.
+# Offline manual precision core is functional.
+# All automated monitoring is currently disabled (DECLARED_NOT_ACTIVELY_MONITORED).
+# No production observation store is committed.
+
+[critical-next-actions]
+actions = [
+  "Complete Zig core test coverage for review state transitions",
+  "Implement legislation.gov.uk API adapter with rate limiting and licence review",
+  "Implement GOV.UK Content API adapter",
+  "Add formal Idris2 proofs for activation safety (canActivate)",
+  "Create signed bundle format and verification",
+  "Implement append-only persistence boundary for observations",
+]
+
+[maintenance-status]
+last-run-utc = "never"
+last-report = "N/A - maintenance infrastructure pending"
+last-result = "unknown"  # unknown | pass | warn | fail
+open-warnings = 0
+open-failures = 0
+
+[ecosystem]
+part-of = ["RSR Framework", "UK Insolvency Ecosystem"]
+depends-on = ["Zig 0.16", "Idris2 0.7", "AffineScript"]
+
+[technology-stack]
+languages = ["Zig", "Idris2", "AffineScript", "Bash"]
+build-system = "Zig build system + Justfile"
+formal-methods = "Idris2 type-level invariants"
