@@ -71,22 +71,36 @@ been reviewed and the maintenance gates are satisfied.
 
 == Architecture
 
-Authority Watch uses a *three-layer architecture* for defence in depth:
+Authority Watch uses a *multi-layer architecture* for defence in depth with
+*PURE* implementations:
 
 * *AffineScript*: Declares the generic authority, observation, change, impact,
   review, bundle, and consumer contracts. The principal application contract
   layer.
 * *Zig*: Implements the executable offline core and host boundaries. Handles
-  file ingestion, SHA-256 digesting, and CLI interface.
+  file ingestion, SHA-256 digesting, and CLI interface. **PURE ZIG FFI — NO C
+  INTERMEDIARY.**
 * *Idris2*: Defines proof-bearing identities, temporal distinctions, legal
   review transitions, and bundle activation constraints. Type-level
-  enforcement of safety invariants.
+  enforcement of safety invariants. **PURE IDRIS2 ABI — NO C INTERMEDIARY.**
+
+=== Estate Integration
+
+**CRITICAL: Do not confuse these two names:**
+
+* `zig-unified-hexadeca-adapter` = **CORRECT** estate ABI adapter, exists in
+  hyperpolymath estate (NOT in rsr-template-repo)
+* `unified-hexadeca-api` = **BLOCKED**, no canonical repository located, do NOT use
+
+See `docs/architecture/estate-reconnaissance.adoc` for the full estate
+reconnaissance findings.
 
 Integration targets (currently inspected, not integrated):
 
 * *typed-wasm*: Intended verified carrier
 * *Gossamer*: Operator console integration (bindings exist, integration staged)
-* *unified-hexadeca-api*: BLOCKED — no canonical repository located
+* *zig-unified-hexadeca-adapter*: In hyperpolymath estate, capability-gated
+* *unified-hexadeca-api*: BLOCKED — no canonical repository located, do NOT use
 
 == First commands
 

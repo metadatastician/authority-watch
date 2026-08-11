@@ -9,9 +9,25 @@ This document records all dependencies of Authority Watch, their current
 status, licence terms, and integration boundaries. It is the canonical
 source for dependency information.
 
+== IMPORTANT CLARIFICATIONS
+
+[IMPORTANT]
+====
+*FFI IS PURE ZIG:* There is NO C FFI in this project. The FFI layer uses pure Zig only.
+
+*ABI IS PURE IDRIS2:* The ABI layer uses pure Idris2 only, with type-level formal definitions.
+
+*ESTATE ADAPTER:* The correct estate ABI adapter is `zig-unified-hexadeca-adapter`
+  (in hyperpolymath estate). This is NOT the same as `unified-hexadeca-api`.
+
+*NOT IN rsr-template-repo:* Neither `zig-unified-hexadeca-adapter` nor
+  `unified-hexadeca-api` are in rsr-template-repo. They are in the hyperpolymath
+  standards repo or other hyperpolymath estate repos.
+====
+
 == Dependency Summary
 
-Authority Watch has three classes of dependencies:
+Authority Watch has four classes of dependencies:
 
 * *Runtime*: Required to build and run the application
 * *Development*: Required for development and testing
@@ -24,9 +40,9 @@ Authority Watch has three classes of dependencies:
 |===
 | Dependency | Version | Status | Licence | Boundary
 
-| Zig | 0.16.x | Available | MIT or Apache-2.0 | Executable core, acquisition, hashing, storage, signatures, protocol boundaries. No C intermediary.
+| Zig | 0.16.x | Available | MIT or Apache-2.0 | Executable core, acquisition, hashing, storage, signatures, protocol boundaries. **PURE ZIG FFI - NO C INTERMEDIARY.**
 
-| Idris2 | 0.7.x | Available | BSD-3-Clause | Identity, transition, temporal and activation invariants. Formal type definitions.
+| Idris2 | 0.7.x | Available | BSD-3-Clause | Identity, transition, temporal and activation invariants. **PURE IDRIS2 ABI - NO C INTERMEDIARY.**
 
 | Bash | Any | Available | GPL-3.0 (typical) | Task orchestration via Justfile. POSIX-compliant shell scripts.
 |===
@@ -38,6 +54,20 @@ Authority Watch has three classes of dependencies:
 | Dependency | Version | Status | Licence | Purpose
 
 | just | 1.x | Available | MIT or Apache-2.0 | Task runner for build orchestration
+|===
+
+== Estate Integration Dependencies
+
+These are dependencies from the hyperpolymath estate that provide integration
+capabilities. They are NOT in rsr-template-repo.
+
+[cols="1,1,1,2,3"]
+|===
+| Dependency | Version | Location | Status | Boundary
+
+| zig-unified-hexadeca-adapter | N/A | hyperpolymath estate (NOT rsr-template-repo) | Inspected | **THIS IS THE CORRECT ESTATE ABI ADAPTER.** Pure Zig + Idris2 implementation. Integration capability-gated pending core ABI stabilization.
+
+| unified-hexadeca-api | N/A | NOT FOUND | BLOCKED | **DO NOT USE.** No canonical repository was located. This is NOT the same as `zig-unified-hexadeca-adapter`. Do not invent or fabricate.
 |===
 
 == Inspected Dependencies
@@ -60,8 +90,6 @@ the build. They may be integrated in future milestones.
 | No-Nonsense NNTPS | N/A | Inspected | GPL-3.0 | Reader/profile integration only; Authority Watch will not turn it into a server.
 
 | proven-tests-and-benches | N/A | Inspected | MPL-2.0 (estate) | Idris2 test taxonomy is reusable; direct package integration is deferred until the initial core ABI stabilises.
-
-| unified-hexadeca-api | N/A | Blocked | N/A | No canonical repository was located. No API is invented in its absence.
 |===
 
 == Blocked Dependencies
@@ -73,7 +101,7 @@ resolving the blocker.
 |===
 | Dependency | Blocker | Resolution Required
 
-| unified-hexadeca-api | No canonical repository | Locate canonical repository or remove dependency
+| unified-hexadeca-api | NO CANONICAL REPOSITORY IN ESTATE | **DO NOT USE.** This name refers to a non-existent or not-located repository. Use `zig-unified-hexadeca-adapter` instead, which IS in hyperpolymath estate.
 |===
 
 == Licence Compliance Status

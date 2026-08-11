@@ -50,10 +50,16 @@ Changes are grouped by release and ordered chronologically.
 * Record capability findings for estate integrations:
   ** Gossamer: AffineScript bindings exist, integration staged
   ** typed-wasm: Intended verified carrier, integration capability-gated
-  ** unified-hexadeca-api: BLOCKED — no canonical repository located
+  ** zig-unified-hexadeca-adapter: CORRECT estate ABI adapter in hyperpolymath estate (NOT in rsr-template-repo)
+  ** unified-hexadeca-api: BLOCKED — no canonical repository located, DO NOT USE
   ** SNIFS: BEAM/Wasm safety design not currently needed
   ** No-Nonsense NNTPS: Reader/profile integration only
   ** proven-tests-and-benches: Idris2 test taxonomy reusable
+
+* **ARCHITECTURE CLARIFICATION:**
+  ** FFI is PURE ZIG (no C intermediary)
+  ** ABI is PURE IDRIS2 (no C intermediary)
+  ** Estate adapter is `zig-unified-hexadeca-adapter` (in hyperpolymath estate)
 
 == v0.1.0 — Foundation Release (Planned: 2026-08-XX)
 

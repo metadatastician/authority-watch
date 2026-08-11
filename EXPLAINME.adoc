@@ -328,11 +328,11 @@ They cannot succeed, even if called. This is a deliberate safety measure.
 
 == Central Claim: Defence in Depth
 
-*Claim:* Authority Watch uses multiple layers of protection.
+*Claim:* Authority Watch uses multiple layers of protection with PURE implementations.
 
 *How this is implemented:*
 
-=== Layer 1: Type System (Idris2)
+=== Layer 1: Type System (Idris2) - PURE IDRIS2 ABI
 
 Idris2 enforces at compile time that:
 
@@ -340,7 +340,10 @@ Idris2 enforces at compile time that:
 * Transitions are explicit (via the `CanAdvance` type in Review.idr)
 * Temporal facts are explicitly typed (via `TemporalFacts` in Core.idr)
 
-=== Layer 2: Runtime Checks (Zig)
+**IMPORTANT:** The ABI layer is PURE IDRIS2. There is NO C ABI. The type
+definitions in `idris2/AuthorityWatch/` ARE the ABI.
+
+=== Layer 2: Runtime Checks (Zig) - PURE ZIG FFI
 
 Zig enforces at runtime that:
 
@@ -348,7 +351,25 @@ Zig enforces at runtime that:
 * Bundle activation requires `canActivate()` (all gates satisfied)
 * Digests are computed correctly (SHA-256)
 
-=== Layer 3: Process Controls (Justfile + AGENTS.md)
+**IMPORTANT:** The FFI layer is PURE ZIG. There is NO C FFI intermediary. The
+Zig code in `zig/src/` IS the FFI layer.
+
+=== Layer 3: Estate Integration (zig-unified-hexadeca-adapter)
+
+The estate ABI adapter is `zig-unified-hexadeca-adapter` (in hyperpolymath estate).
+
+**CRITICAL DISTINCTION:**
+
+* `zig-unified-hexadeca-adapter` = CORRECT, EXISTS in hyperpolymath estate
+* `unified-hexadeca-api` = BLOCKED, DOES NOT EXIST, NO CANONICAL REPOSITORY
+
+The `zig-unified-hexadeca-adapter` is NOT in rsr-template-repo. It is in the
+hyperpolymath standards repo or other hyperpolymath estate repos.
+
+See `docs/architecture/estate-reconnaissance.adoc` for the full estate
+reconnaissance findings.
+
+=== Layer 4: Process Controls (Justfile + AGENTS.md)
 
 Process-level enforcement:
 
@@ -356,7 +377,7 @@ Process-level enforcement:
 * AGENTS.md forbids automated approval
 * Production commands are hard-blocked
 
-=== Layer 4: Configuration (Profiles)
+=== Layer 5: Configuration (Profiles)
 
 * All sources are disabled by default
 * Production updates are disabled by default
