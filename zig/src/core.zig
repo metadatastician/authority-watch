@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-2.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 const std = @import("std");
 
 pub const AuthorityGrade = enum(u8) {
