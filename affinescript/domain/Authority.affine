@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-2.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 // Generic Authority Watch domain contract. No insolvency-specific core types.
 
 type StableId = String;

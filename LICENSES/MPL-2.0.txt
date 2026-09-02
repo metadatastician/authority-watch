@@ -1,0 +1,10 @@
+SPDX-License-Identifier: MPL-2.0
+
+This repository uses the MPL-2.0 licence (Mozilla Public License Version 2.0).
+
+The full text of the licence is available in the LICENSE file at the root of
+the repository.
+
+See: https://www.mozilla.org/media/MPL/2.0/index.txt
+
+This file is a convenience copy for licence scanning tools.
