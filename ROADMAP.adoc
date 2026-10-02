@@ -36,7 +36,7 @@ strictly-controlled, manual-only precision core.
 === Work Items
 
 [cols="1,1,1,2"]
-|=== 
+|===
 | ID | Status | Priority | Description
 
 | M1-001 | Complete | High | Core ontology (AuthorityGrade, ReviewState, Freshness, TemporalFacts)
@@ -47,7 +47,7 @@ strictly-controlled, manual-only precision core.
 | M1-006 | In Progress | High | Comprehensive documentation (README, EXPLAINME, AFFIRMATION, AUDIT, GOVERNANCE)
 | M1-007 | Not Started | Medium | Persistent observation storage (append-only ledger)
 | M1-008 | Not Started | Medium | Formal proof of review state properties (Idris2)
-|=== 
+|===
 
 === Success Criteria
 
@@ -75,7 +75,7 @@ sources with proper licence compliance and rate limiting.
 === Work Items
 
 [cols="1,1,1,2"]
-|=== 
+|===
 | ID | Status | Priority | Description
 
 | M2-001 | Not Started | High | legislation.gov.uk API adapter with rate limiting
@@ -85,7 +85,7 @@ sources with proper licence compliance and rate limiting.
 | M2-005 | Not Started | Medium | Source health monitoring and reporting
 | M2-006 | Not Started | Medium | Error handling and retry logic
 | M2-007 | Not Started | Medium | Fixture generation for testing
-|=== 
+|===
 
 === Success Criteria
 
@@ -111,7 +111,7 @@ Practice, Joint Insolvency Examination Board, professional codes).
 === Work Items
 
 [cols="1,1,1,2"]
-|=== 
+|===
 | ID | Status | Priority | Description
 
 | M3-001 | Not Started | High | SIP (Statements of Insolvency Practice) adapter
@@ -120,7 +120,7 @@ Practice, Joint Insolvency Examination Board, professional codes).
 | M3-004 | Not Started | Medium | Same-URL document replacement detection
 | M3-005 | Not Started | Medium | Email-assisted ingestion for manual sources
 | M3-006 | Not Started | Medium | Professional source licence review
-|=== 
+|===
 
 === Success Criteria
 
@@ -146,7 +146,7 @@ and verify signed update bundles.
 === Work Items
 
 [cols="1,1,1,2"]
-|=== 
+|===
 | ID | Status | Priority | Description
 
 | M4-001 | Not Started | High | Signed manifest format and verification
@@ -156,7 +156,7 @@ and verify signed update bundles.
 | M4-005 | Not Started | Medium | Freshness tracking and reporting
 | M4-006 | Not Started | Medium | sim-insolvency certificate withholding integration
 | M4-007 | Not Started | Medium | Consumer API for bundle retrieval
-|=== 
+|===
 
 === Success Criteria
 
@@ -183,7 +183,7 @@ NNTPS protocol for review thread storage and retrieval.
 === Work Items
 
 [cols="1,1,1,2"]
-|=== 
+|===
 | ID | Status | Priority | Description
 
 | M5-001 | Not Started | High | NNTPS client implementation
@@ -191,7 +191,7 @@ NNTPS protocol for review thread storage and retrieval.
 | M5-003 | Not Started | Medium | Signed release/revocation notices
 | M5-004 | Not Started | Medium | Integration with review workflow
 | M5-005 | Not Started | Low | Public read API for review threads
-|=== 
+|===
 
 === Success Criteria
 
@@ -216,7 +216,7 @@ and monitoring capabilities.
 === Work Items
 
 [cols="1,1,1,2"]
-|=== 
+|===
 | ID | Status | Priority | Description
 
 | M6-001 | Not Started | High | Read API for observations and bundles
@@ -227,7 +227,7 @@ and monitoring capabilities.
 | M6-006 | Not Started | Medium | Key management infrastructure
 | M6-007 | Not Started | Medium | Public status page
 | M6-008 | Not Started | Low | Rate limiting and abuse prevention
-|=== 
+|===
 
 === Success Criteria
 
